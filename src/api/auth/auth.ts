@@ -1,6 +1,5 @@
 import request from "@/common/request";
-import { type LoginResponse, type LoginSchema } from "@/api/auth/types";
-import { type Response } from "@/api/types";
+import { type Response, type LoginResponse, type LoginSchema } from "@/api/types";
 
 
 enum API {
