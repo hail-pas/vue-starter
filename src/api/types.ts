@@ -8,20 +8,20 @@ export interface Response<T> {
 
 
 export interface LoginSchema {
-  phone: string;
+  username: string;
   password: string;
 }
 
 
 export interface RegisterSchema {
-  phone: string;
+  username: string;
   password: string;
   name: string;
 }
 
 export interface AccountInfo {
   id: number;
-  phone: string;
+  username: string;
   name: string;
   email: string;
   created_at: string;

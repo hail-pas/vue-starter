@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import Login from "@/views/entry/Login.vue";
+
 </script>
 
 <template>
-  <Login></Login>
+  <router-view></router-view>
 </template>
 
-<style lang="scss" scoped>
-h2 {
-  color: $base-color;
+<style lang="scss">
+html,body, #app{
+    height: 100%
 }
 </style>
 

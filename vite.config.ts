@@ -1,6 +1,5 @@
-import { UserConfigExport, ConfigEnv } from "vite";
+import { UserConfigExport } from "vite";
 
-import { viteMockServe } from 'vite-plugin-mock'
 import vue from "@vitejs/plugin-vue";
 
 import path from 'path'
@@ -8,7 +7,9 @@ import path from 'path'
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 
 // https://vite.dev/config/
-export default ({ command }: ConfigEnv): UserConfigExport => {
+// { command }: ConfigEnv
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default (): UserConfigExport => {
   return {
     plugins: [
       vue(),
@@ -17,10 +18,6 @@ export default ({ command }: ConfigEnv): UserConfigExport => {
         iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
         // 指定symbolId格式
         symbolId: 'icon-[dir]-[name]',
-      }),
-      viteMockServe({
-        // default
-        enable: command === 'serve',
       }),
     ],
     resolve: {
