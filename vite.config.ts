@@ -8,7 +8,7 @@ import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 
 // https://vite.dev/config/
 // { command }: ConfigEnv
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 export default (): UserConfigExport => {
   return {
     plugins: [
@@ -33,5 +33,8 @@ export default (): UserConfigExport => {
         },
       },
     },
+    build: {
+      sourcemap: true
+    }
   }
 };
