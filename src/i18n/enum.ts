@@ -1,5 +1,5 @@
 // vue-i18n code
-export enum LangCodeEnum {
-    en = "en",
-    zh = "zhCn"
+export enum LanguageCodeEnum {
+  en = "en",
+  zh = "zhCn",
 }

@@ -1,2 +1,2 @@
-declare module 'virtual:svg-icons-register';
-declare module 'virtual:svg-icons-names';
+declare module "virtual:svg-icons-register";
+declare module "virtual:svg-icons-names";

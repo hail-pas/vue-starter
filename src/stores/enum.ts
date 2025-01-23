@@ -1,4 +1,5 @@
 export enum StoreKeyEnum {
-    userInfo = "userInfo",
-    language = "language"
+  userToken = "userToken",
+  userInfo = "userInfo",
+  language = "language",
 }

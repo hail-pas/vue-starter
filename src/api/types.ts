@@ -6,12 +6,10 @@ export interface Response<T> {
   trace_id: string;
 }
 
-
 export interface LoginSchema {
   username: string;
   password: string;
 }
-
 
 export interface RegisterSchema {
   username: string;
@@ -23,7 +21,7 @@ export interface AccountInfo {
   id: number;
   username: string;
   name: string;
-  email: string;
+  phone: string;
   created_at: string;
   updated_at: string;
 }
