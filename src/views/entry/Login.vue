@@ -21,6 +21,7 @@ const { t: $t } = useI18n();
 // 切换语言
 
 let loading = ref(false);
+let languageIconColor = ref("black");
 
 let loginData: LoginSchema = reactive<LoginSchema>({
   username: "admin",
@@ -158,7 +159,10 @@ function goForgetPassword() {
               <SvgIcon
                 name="language"
                 class="language_icon"
+                :color="languageIconColor"
                 @click="langStore.toggleLanguage"
+                @mouseover="languageIconColor = 'blue'"
+                @mouseout="languageIconColor = 'black'"
               />
               <span class="forget_pwd_span" @click="goForgetPassword">{{
                 $t("login.forgotPassword")
