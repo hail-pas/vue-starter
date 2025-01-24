@@ -136,6 +136,8 @@ function goForgetPassword() {
                 clearable
                 autocomplete="on"
                 autofocus
+                maxlength="16"
+                minlength="4"
                 :placeholder="$t('login.usernamePlaceholder')"
                 @input="validateForm(ruleFormRef)"
               >
@@ -152,8 +154,8 @@ function goForgetPassword() {
               <el-input
                 v-model="loginData.password"
                 show-password
-                maxlength="16"
-                minlength="4"
+                maxlength="20"
+                minlength="8"
                 clearable
                 :placeholder="$t('login.passwordPlaceholder')"
                 @input="validateForm(ruleFormRef)"
