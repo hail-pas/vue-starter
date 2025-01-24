@@ -64,6 +64,19 @@ let loginBtnDisabled = ref(
 );
 
 // 登录
+
+function _getGreeting() {
+  const currentHour = new Date().getHours();
+
+  if (currentHour >= 0 && currentHour < 12) {
+    return $t("login.loginSuccessMorning");
+  } else if (currentHour >= 12 && currentHour < 18) {
+    return $t("login.loginSuccessAfternoon");
+  } else {
+    return $t("login.loginSuccessEvening");
+  }
+}
+
 const submitForm = async (formEl: FormInstance | undefined) => {
   loading.value = true;
   if (await validateForm(formEl)) {
@@ -71,9 +84,11 @@ const submitForm = async (formEl: FormInstance | undefined) => {
       // 保存token到本地
       useUserInfoStore().setToken(res.data.token);
       router.push({ name: RouteNameEnum.Home });
+
       ElNotification({
         type: "success",
-        message: $t("login.loginSuccess"),
+        message: $t("login.loginSuccessWelcom"),
+        title: _getGreeting(),
       });
     });
   } else {
@@ -124,7 +139,6 @@ function goForgetPassword() {
             :rules="formRules"
             :model="loginData"
             :scroll-to-error="true"
-            :inline-message="true"
             :show-message="true"
           >
             <h1>{{ $t("login.title") }}</h1>
@@ -223,9 +237,9 @@ function goForgetPassword() {
   .login_form {
     max-width: 75%;
     margin: 0 auto; // 如果想在这列里水平居中
-    padding: 20px;
+    padding: 1.5em;
     background: rgb(255, 255, 255, 0.2);
-    border-radius: 1.5em;
+    border-radius: 2em;
     box-shadow: 0 0 1.5em rgba(0, 0, 0, 0.6);
 
     :deep(.el-input__wrapper) {
@@ -233,6 +247,15 @@ function goForgetPassword() {
       border-bottom: 1px solid black;
       border-radius: 0;
       background: transparent;
+    }
+
+    .el-input {
+      font-size: large;
+    }
+
+    :deep(.el-form-item__error) {
+      font-size: 1em; /* 你可以根据需要调整字体大小 */
+      font-weight: 500;
     }
 
     .login_footer {
@@ -246,6 +269,7 @@ function goForgetPassword() {
 
     .login_btn {
       width: 100%;
+      border-radius: 2em;
     }
 
     .forget_pwd_span {
