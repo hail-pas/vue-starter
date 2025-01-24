@@ -120,7 +120,7 @@ function goForgetPassword() {
                 :placeholder="$t('login.usernamePlaceholder')"
               >
                 <template #prefix>
-                  <el-icon color="black">
+                  <el-icon color="black" size="1.6em">
                     <User />
                   </el-icon>
                 </template>
@@ -138,7 +138,7 @@ function goForgetPassword() {
                 :placeholder="$t('login.passwordPlaceholder')"
               >
                 <template #prefix>
-                  <el-icon color="black">
+                  <el-icon color="black" size="1.6em">
                     <Lock />
                   </el-icon>
                 </template>
@@ -234,7 +234,8 @@ function goForgetPassword() {
     }
 
     .language_icon {
-      font-size: 1.3em;
+      margin-left: 0.3em;
+      font-size: 1.6em;
       cursor: pointer;
     }
   }
