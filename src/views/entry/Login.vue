@@ -59,29 +59,48 @@ const formRules: FormRules<LoginSchema> = {
   ],
 };
 
+let loginBtnDisabled = ref(
+  loginData.username === "" || loginData.password === "",
+);
+
 // 登录
 const submitForm = async (formEl: FormInstance | undefined) => {
   loading.value = true;
-  if (!formEl) return;
-  await formEl.validate((valid) => {
-    if (valid) {
-      reqLogin(loginData).then((res) => {
-        // 保存token到本地
-        useUserInfoStore().setToken(res.data.token);
-        router.push({ name: RouteNameEnum.Home });
-        ElNotification({
-          type: "success",
-          message: $t("login.loginSuccess"),
-        });
+  if (await validateForm(formEl)) {
+    reqLogin(loginData).then((res) => {
+      // 保存token到本地
+      useUserInfoStore().setToken(res.data.token);
+      router.push({ name: RouteNameEnum.Home });
+      ElNotification({
+        type: "success",
+        message: $t("login.loginSuccess"),
       });
+    });
+  } else {
+    ElMessage({
+      type: "error",
+      message: $t("error.wrongInputValue"),
+    });
+  }
+  loading.value = false;
+};
+
+const validateForm = async (formEl: FormInstance | undefined) => {
+  let validateResult = false;
+  if (!formEl) {
+    loginBtnDisabled.value = true;
+    return validateResult;
+  }
+
+  await formEl.validate((isValid) => {
+    if (isValid) {
+      loginBtnDisabled.value = false;
+      validateResult = true;
     } else {
-      ElMessage({
-        type: "error",
-        message: $t("error.badRequest"),
-      });
+      loginBtnDisabled.value = true;
     }
-    loading.value = false;
   });
+  return validateResult;
 };
 
 // 忘记密码
@@ -118,6 +137,7 @@ function goForgetPassword() {
                 autocomplete="on"
                 autofocus
                 :placeholder="$t('login.usernamePlaceholder')"
+                @input="validateForm(ruleFormRef)"
               >
                 <template #prefix>
                   <el-icon color="black" size="1.6em">
@@ -136,6 +156,7 @@ function goForgetPassword() {
                 minlength="4"
                 clearable
                 :placeholder="$t('login.passwordPlaceholder')"
+                @input="validateForm(ruleFormRef)"
               >
                 <template #prefix>
                   <el-icon color="black" size="1.6em">
@@ -150,6 +171,7 @@ function goForgetPassword() {
                 class="login_btn"
                 type="primary"
                 :loading="loading"
+                :disabled="loginBtnDisabled"
                 @click="submitForm(ruleFormRef)"
                 >{{ $t("login.login") }}</el-button
               >

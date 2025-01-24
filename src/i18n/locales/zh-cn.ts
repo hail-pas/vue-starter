@@ -28,5 +28,6 @@ export default {
     forbidden: "禁止访问",
     badRequest: "请求参数错误",
     unknownError: "未知错误",
+    wrongInputValue: "请检查输入值",
   },
 };

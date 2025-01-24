@@ -28,5 +28,6 @@ export default {
     forbidden: "Forbidden",
     badRequest: "Request parameters error",
     unknownError: "Unknown error",
+    wrongInputValue: "Please check the input value",
   },
 };
