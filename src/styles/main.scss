@@ -1,1 +1,14 @@
+// normalize
 @use "@/styles/normalize.scss";
+
+// 滚动条
+::-webkit-scrollbar{
+    width: 10px;
+}
+::-webkit-scrollbar-track{
+    background: white;
+}
+::-webkit-scrollbar-thumb{
+    width: 10px;
+    background-color: #001529;
+}

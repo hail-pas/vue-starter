@@ -2,11 +2,6 @@ import { RouteNameEnum, RoutePathEnum } from "@/router/enum";
 
 export const constantRoutes = [
   {
-    path: RoutePathEnum.Home,
-    name: RouteNameEnum.Home,
-    component: () => import("@/views/home/Home.vue"),
-  },
-  {
     path: RoutePathEnum.Login,
     name: RouteNameEnum.Login,
     component: () => import("@/views/entry/Login.vue"),
@@ -20,6 +15,11 @@ export const constantRoutes = [
     path: RoutePathEnum.ForgotPassword,
     name: RouteNameEnum.ForgotPassword,
     component: () => import("@/views/entry/ForgotPassword.vue"),
+  },
+  {
+    path: RoutePathEnum.Home,
+    name: RouteNameEnum.Home,
+    component: () => import("@/views/home/Home.vue"),
   },
 
   // error pages
