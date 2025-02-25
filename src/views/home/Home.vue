@@ -4,16 +4,21 @@ import Menu from "@/components/share/menu/Menu.vue";
 import { RouteNameEnum } from "@/router/enum";
 import router from "@/router/main";
 import { getOrUpdateSystemResources } from "@/stores/user/utils";
+import { ElMessage } from "element-plus";
 // import { useUserInfoStore } from "@/stores/user/main";
 // import { ElMessage } from "element-plus";
-// import { useI18n } from "vue-i18n";
-// const { t: $t } = useI18n();
+import { useI18n } from "vue-i18n";
+const { t: $t } = useI18n();
 
 const systemResources = getOrUpdateSystemResources(true);
 
 // 没有菜单跳转到forbidden
-if (!systemResources || systemResources.length == 0) {
-  router.push({ name: RouteNameEnum.Forbidden });
+if (systemResources.length == 0) {
+  ElMessage({
+    type: "error",
+    message: $t("login.sysResourceInvalid"),
+  });
+  router.push({ name: RouteNameEnum.Login });
 }
 </script>
 

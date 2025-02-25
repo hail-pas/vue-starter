@@ -87,7 +87,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 
       const systemResources = getOrUpdateSystemResources(true);
 
-      if (!systemResources || systemResources.length == 0) {
+      if (systemResources.length == 0) {
         ElMessage({
           type: "error",
           message: $t("login.sysResourceInvalid"),

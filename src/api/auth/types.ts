@@ -40,5 +40,5 @@ export interface SystemResource {
   enabled: boolean;
   assignable: boolean;
   parent_id: bigint;
-  chuildren: Array<SystemResource>;
+  children: Array<SystemResource>;
 }

@@ -8,7 +8,7 @@ export const useUserInfoStore = defineStore(StoreKeyEnum.userInfo, () => {
 
   let accountInfo: AccountInfo | null = null;
 
-  let systemResources: Array<SystemResource> | null = null;
+  let systemResources: Array<SystemResource> = [];
 
   function setToken(t: string) {
     token = t;
@@ -31,7 +31,7 @@ export const useUserInfoStore = defineStore(StoreKeyEnum.userInfo, () => {
     systemResources = sr;
   }
 
-  function getSystemResources(): Array<SystemResource> | null {
+  function getSystemResources(): Array<SystemResource> {
     return systemResources;
   }
 
