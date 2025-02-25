@@ -18,6 +18,7 @@ export default {
     register: "注册",
     forgotPassword: "忘记密码？",
     error: "用户名或密码错误",
+    sysResourceInvalid: "无可用菜单, 请联系管理员",
   },
   home: {
     welcome: "欢迎",

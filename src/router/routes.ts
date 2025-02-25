@@ -22,6 +22,18 @@ export const constantRoutes = [
     component: () => import("@/views/home/Home.vue"),
   },
 
+  // 系统管理
+  {
+    path: RoutePathEnum.SystemManageUser,
+    name: RouteNameEnum.SystemManageUser,
+    component: () => import("@/views/sys-manage/User.vue"),
+  },
+  {
+    path: RoutePathEnum.SystemManageRole,
+    name: RouteNameEnum.SystemManageRole,
+    component: () => import("@/views/sys-manage/Role.vue"),
+  },
+
   // error pages
   {
     path: RoutePathEnum.NotFound,

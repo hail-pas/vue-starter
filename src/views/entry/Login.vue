@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { User, Lock } from "@element-plus/icons-vue";
-import { type LoginSchema } from "@/api/types";
+import { type LoginSchema } from "@/api/auth/types";
 import type { FormInstance, FormRules } from "element-plus";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
@@ -11,6 +11,7 @@ import SvgIcon from "@/components/global/SvgIcon.vue";
 import { reqLogin } from "@/api/auth/auth";
 import { ElMessage, ElNotification } from "element-plus";
 import { useUserInfoStore } from "@/stores/user/main";
+import { getOrUpdateSystemResources } from "@/stores/user/utils";
 
 const router = useRouter();
 
@@ -83,6 +84,18 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     reqLogin(loginData).then((res) => {
       // 保存token到本地
       useUserInfoStore().setToken(res.data.token);
+
+      const systemResources = getOrUpdateSystemResources(true);
+
+      if (!systemResources || systemResources.length == 0) {
+        ElMessage({
+          type: "error",
+          message: $t("login.sysResourceInvalid"),
+        });
+        loading.value = false;
+        return;
+      }
+
       router.push({ name: RouteNameEnum.Home });
 
       ElNotification({

@@ -9,6 +9,11 @@ export enum RouteNameEnum {
   Maintained = "Maintained",
   About = "About",
   NotMatched = "NotMatched",
+
+  // 系统管理
+  SystemManage = "SystemManage",
+  SystemManageUser = "SystemManageUser",
+  SystemManageRole = "SystemManageRole",
 }
 
 export enum RoutePathEnum {
@@ -17,6 +22,11 @@ export enum RoutePathEnum {
   Register = "/register",
   ForgotPassword = "/forgot-password",
   About = "/about",
+
+  // 系统管理
+  SystemManage = "/sys-manage",
+  SystemManageUser = "/sys-manage/user",
+  SystemManageRole = "/sys-manage/role",
 
   // error pages
   NotFound = "/error/not-found",

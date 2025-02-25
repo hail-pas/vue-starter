@@ -1,9 +1,11 @@
 import { http } from "@/common/request";
+import { type Response } from "@/api/types";
 import {
-  type Response,
   type LoginResponse,
   type LoginSchema,
-} from "@/api/types";
+  type SystemResourceFilterSchema,
+  type SystemResource,
+} from "@/api/auth/types";
 
 enum APIV1 {
   LOGIN = "/v1/auth/login",
@@ -12,6 +14,7 @@ enum APIV1 {
   RESET_PASSWORD = "/v1/auth/reset-password",
   CHANGE_PASSWORD = "/v1/auth/change-password",
   FORGET_PASSWORD = "/v1/auth/forget-password",
+  SYSTEM_RESOURCE = "/v1/auth/system-resource",
 }
 
 export const reqLogin = (data: LoginSchema) =>
@@ -21,3 +24,16 @@ export const reqLogin = (data: LoginSchema) =>
     },
     withCredentials: false,
   });
+
+export const reqGetSystemResource = (
+  param: SystemResourceFilterSchema | null = null,
+) => {
+  const type = param ? param.type : "";
+  const parent_id = param ? param.parent_id : 0;
+  return http.get<Response<Array<SystemResource>>>(
+    `${APIV1.SYSTEM_RESOURCE}?type=${type}&parent_id=${parent_id}`,
+    {
+      withCredentials: true,
+    },
+  );
+};

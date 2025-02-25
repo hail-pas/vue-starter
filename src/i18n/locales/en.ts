@@ -18,6 +18,7 @@ export default {
     register: "Register",
     forgotPassword: "Forgot password?",
     error: "Invalid username or password",
+    sysResourceInvalid: "No valid menus, please contact admin",
   },
   home: {
     welcome: "Welcome",

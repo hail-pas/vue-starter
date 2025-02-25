@@ -1,13 +1,31 @@
 <script setup lang="ts">
 import Logo from "@/components/share/Logo.vue";
+import Menu from "@/components/share/menu/Menu.vue";
+import { RouteNameEnum } from "@/router/enum";
+import router from "@/router/main";
+import { getOrUpdateSystemResources } from "@/stores/user/utils";
+// import { useUserInfoStore } from "@/stores/user/main";
+// import { ElMessage } from "element-plus";
+// import { useI18n } from "vue-i18n";
+// const { t: $t } = useI18n();
+
+const systemResources = getOrUpdateSystemResources(true);
+
+// 没有菜单跳转到forbidden
+if (!systemResources || systemResources.length == 0) {
+  router.push({ name: RouteNameEnum.Forbidden });
+}
 </script>
 
 <template>
   <div class="layout_container">
     <div class="side_menu">
-      <Logo></Logo>
+      <Logo logo-icon-name="-"></Logo>
       <div class="menu">
-
+        <!-- 滚动组件 -->
+        <el-scrollbar class="scrollBar">
+          <Menu :system-resources="systemResources!"></Menu>
+        </el-scrollbar>
       </div>
     </div>
     <div class="header">header</div>
@@ -25,8 +43,13 @@ import Logo from "@/components/share/Logo.vue";
     position: fixed;
     width: $base-menu-width;
     height: 100vh;
-    background-color: #001529;
-    color: white;
+    background-color: $base-side-menu-background-color;
+    color: $base-side-menu-text-color;
+
+    .scrollBar {
+      width: 100%;
+      height: calc(100vh - $base-logo-height - $base-logo-margin-top);
+    }
   }
 
   .header {
