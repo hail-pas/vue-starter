@@ -238,9 +238,9 @@ function goForgetPassword() {
     max-width: 75%;
     margin: 0 auto; // 如果想在这列里水平居中
     padding: 1.5em;
-    background: rgb(255, 255, 255, 0.2);
-    border-radius: 2em;
-    box-shadow: 0 0 1.5em rgba(0, 0, 0, 0.6);
+    // background: rgb(255, 255, 255, 0.2);
+    // border-radius: 2em;
+    // box-shadow: 0 0 1.5em rgba(0, 0, 0, 0.6);
 
     :deep(.el-input__wrapper) {
       box-shadow: none !important;
