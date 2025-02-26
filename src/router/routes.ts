@@ -22,16 +22,28 @@ export const constantRoutes = [
     component: () => import("@/views/home/Home.vue"),
   },
 
+  // 主页
+  {
+    path: RoutePathEnum.Index,
+    name: RouteNameEnum.Index,
+    component: () => import("@/views/index/Index.vue"),
+  },
+
   // 系统管理
   {
     path: RoutePathEnum.SystemManageUser,
     name: RouteNameEnum.SystemManageUser,
-    component: () => import("@/views/sys-manage/User.vue"),
+    component: () => import("@/views/sys-manage/user/User.vue"),
   },
   {
     path: RoutePathEnum.SystemManageRole,
     name: RouteNameEnum.SystemManageRole,
-    component: () => import("@/views/sys-manage/Role.vue"),
+    component: () => import("@/views/sys-manage/role/Role.vue"),
+  },
+  {
+    path: RoutePathEnum.SystemManageMenu,
+    name: RouteNameEnum.SystemManageMenu,
+    component: () => import("@/views/sys-manage/menu/Menu.vue"),
   },
 
   // error pages

@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import Logo from "@/components/share/Logo.vue";
-import Menu from "@/components/share/menu/Menu.vue";
+import MenuItems from "@/components/share/menu/Menu.vue";
 import { RouteNameEnum } from "@/router/enum";
 import router from "@/router/main";
 import { getOrUpdateSystemResources } from "@/stores/user/utils";
 import { ElMessage } from "element-plus";
 // import { useUserInfoStore } from "@/stores/user/main";
 // import { ElMessage } from "element-plus";
+// import Main from "@/views/home/Main.vue"
 import { useI18n } from "vue-i18n";
 const { t: $t } = useI18n();
 
@@ -29,12 +30,16 @@ if (systemResources.length == 0) {
       <div class="menu">
         <!-- 滚动组件 -->
         <el-scrollbar class="scrollBar">
-          <Menu :system-resources="systemResources!"></Menu>
+          <el-menu>
+            <MenuItems :system-resources="systemResources!"></MenuItems>
+          </el-menu>
         </el-scrollbar>
       </div>
     </div>
     <div class="header">header</div>
-    <div class="content">lorem1000</div>
+    <div class="content">
+      <Main></Main>
+    </div>
   </div>
 </template>
 
@@ -54,6 +59,13 @@ if (systemResources.length == 0) {
     .scrollBar {
       width: 100%;
       height: calc(100vh - $base-logo-height - $base-logo-margin-top);
+
+      .el-menu {
+        --el-menu-bg-color: $base-side-menu-background-color;
+        --el-menu-text-color: $base-side-menu-text-color;
+        --el-menu-active-color: orange;
+        border-right: none;
+      }
     }
   }
 

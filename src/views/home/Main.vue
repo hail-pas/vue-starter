@@ -1,7 +1,8 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div>角色管理</div>
+  <h1>RouterView</h1>
+  <router-view></router-view>
 </template>
 
 <style lang="scss" scoped></style>
