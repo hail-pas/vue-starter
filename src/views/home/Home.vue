@@ -7,7 +7,7 @@ import { getOrUpdateSystemResources } from "@/stores/user/utils";
 import { ElMessage } from "element-plus";
 // import { useUserInfoStore } from "@/stores/user/main";
 // import { ElMessage } from "element-plus";
-// import Main from "@/views/home/Main.vue"
+import Main from "@/views/home/Main.vue";
 import { useI18n } from "vue-i18n";
 const { t: $t } = useI18n();
 

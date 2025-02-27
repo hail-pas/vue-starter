@@ -1,4 +1,33 @@
-import { RouteNameEnum, RoutePathEnum } from "@/router/enum";
+import {
+  MainContentRoutePath,
+  RouteNameEnum,
+  RoutePathEnum,
+} from "@/router/enum";
+
+const mainContentRoutes = [
+  {
+    path: MainContentRoutePath.Index,
+    name: RouteNameEnum.Index,
+    component: () => import("@/views/index/Index.vue"),
+  },
+
+  // 系统管理
+  {
+    path: MainContentRoutePath.SystemManageUser,
+    name: RouteNameEnum.SystemManageUser,
+    component: () => import("@/views/sys-manage/user/User.vue"),
+  },
+  {
+    path: MainContentRoutePath.SystemManageRole,
+    name: RouteNameEnum.SystemManageRole,
+    component: () => import("@/views/sys-manage/role/Role.vue"),
+  },
+  {
+    path: MainContentRoutePath.SystemManageMenu,
+    name: RouteNameEnum.SystemManageMenu,
+    component: () => import("@/views/sys-manage/menu/Menu.vue"),
+  },
+];
 
 export const constantRoutes = [
   {
@@ -20,30 +49,7 @@ export const constantRoutes = [
     path: RoutePathEnum.Home,
     name: RouteNameEnum.Home,
     component: () => import("@/views/home/Home.vue"),
-  },
-
-  // 主页
-  {
-    path: RoutePathEnum.Index,
-    name: RouteNameEnum.Index,
-    component: () => import("@/views/index/Index.vue"),
-  },
-
-  // 系统管理
-  {
-    path: RoutePathEnum.SystemManageUser,
-    name: RouteNameEnum.SystemManageUser,
-    component: () => import("@/views/sys-manage/user/User.vue"),
-  },
-  {
-    path: RoutePathEnum.SystemManageRole,
-    name: RouteNameEnum.SystemManageRole,
-    component: () => import("@/views/sys-manage/role/Role.vue"),
-  },
-  {
-    path: RoutePathEnum.SystemManageMenu,
-    name: RouteNameEnum.SystemManageMenu,
-    component: () => import("@/views/sys-manage/menu/Menu.vue"),
+    children: mainContentRoutes,
   },
 
   // error pages
