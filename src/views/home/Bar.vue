@@ -30,14 +30,14 @@ defineProps({
       </el-breadcrumb>
     </div>
     <div class="right">
-      <el-button type="primary" size="smalll" icon="Refresh" circle></el-button>
+      <el-button type="primary" size="small" icon="Refresh" circle></el-button>
       <el-button
         type="primary"
-        size="smalll"
+        size="small"
         icon="FullScreen"
         circle
       ></el-button>
-      <el-button type="primary" size="smalll" icon="Setting" circle></el-button>
+      <el-button type="primary" size="small" icon="Setting" circle></el-button>
       <img :src="avatarPath" :alt="username" />
     </div>
   </div>
