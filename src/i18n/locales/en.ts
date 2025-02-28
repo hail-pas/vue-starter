@@ -22,9 +22,7 @@ export default {
   },
   home: {
     welcome: "Welcome",
-  },
-  menubar: {
-    home: "Home",
+    loading: "Loading...",
   },
   error: {
     serverError: "Server error",

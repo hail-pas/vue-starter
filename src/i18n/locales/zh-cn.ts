@@ -22,9 +22,7 @@ export default {
   },
   home: {
     welcome: "欢迎",
-  },
-  menubar: {
-    home: "首页",
+    loading: "正在加载...",
   },
   error: {
     serverError: "服务器错误",

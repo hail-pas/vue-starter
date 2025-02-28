@@ -26,29 +26,32 @@ export default {
     <template v-if="resource.enabled">
       <el-menu-item
         v-if="resource.children.length == 0"
-        :index="resource.id.toString()"
+        :index="resource.route_path"
+        :id="resource.id"
         @click="routeMain(resource.route_path)"
       >
-        <span>
+        <template v-if="resource.icon_path">
+          <el-icon>
+            <component :is="resource.icon_path"></component>
+          </el-icon>
+        </template>
+        <template #title>
+          <span>
+            {{ resource.label }}
+          </span>
+        </template>
+      </el-menu-item>
+      <el-sub-menu v-else :index="resource.route_path" :id="resource.id">
+        <template #title>
           <template v-if="resource.icon_path">
             <el-icon>
               <component :is="resource.icon_path"></component>
             </el-icon>
           </template>
-          {{ resource.label }}
-        </span>
-      </el-menu-item>
-      <el-sub-menu v-else :index="resource.id.toString()">
-        <template #title
-          ><span>
-            <template v-if="resource.icon_path">
-              <el-icon>
-                <component :is="resource.icon_path"></component>
-              </el-icon>
-            </template>
+          <span>
             {{ resource.label }}
-          </span></template
-        >
+          </span>
+        </template>
         <MenuItems :system-resources="resource.children" />
       </el-sub-menu>
     </template>
@@ -57,7 +60,8 @@ export default {
 
 <style lang="scss" scoped>
 .el-menu-item:hover span,
-.el-sub-menu__title:hover span {
-  color: black;
+.el-sub-menu__title:hover span,
+.el-icon:hover {
+  color: #409eff;
 }
 </style>
