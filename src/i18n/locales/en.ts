@@ -32,4 +32,11 @@ export default {
     unknownError: "Unknown error",
     wrongInputValue: "Please check the input value",
   },
+  menu: {
+    index: "Index",
+    systemManage: "SystemManage",
+    SystemManageUser: "UserManage",
+    SystemManageRole: "RoleManage",
+    SystemManageMenu: "MenuManage",
+  },
 };

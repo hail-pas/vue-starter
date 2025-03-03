@@ -32,4 +32,11 @@ export default {
     unknownError: "未知错误",
     wrongInputValue: "请检查输入值",
   },
+  menu: {
+    index: "首页",
+    systemManage: "系统管理",
+    SystemManageUser: "用户管理",
+    SystemManageRole: "角色管理",
+    SystemManageMenu: "菜单管理",
+  },
 };

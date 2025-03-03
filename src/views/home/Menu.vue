@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { SystemResource } from "@/api/auth/types";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
+const { t: $t } = useI18n();
 
 defineProps({
   systemResources: {
@@ -37,7 +39,7 @@ export default {
         </template>
         <template #title>
           <span>
-            {{ resource.label }}
+            {{ $t(`menu.${resource.code}`) }}
           </span>
         </template>
       </el-menu-item>
@@ -49,7 +51,7 @@ export default {
             </el-icon>
           </template>
           <span>
-            {{ resource.label }}
+            {{ $t(`menu.${resource.code}`) }}
           </span>
         </template>
         <MenuItems :system-resources="resource.children" />

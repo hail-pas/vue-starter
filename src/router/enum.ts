@@ -18,10 +18,13 @@ export enum RouteNameEnum {
   SystemManageUser = "SystemManageUser",
   SystemManageRole = "SystemManageRole",
   SystemManageMenu = "SystemManageMenu",
+  SystemManageMenuC1 = "SystemManageMenuC1",
+  SystemManageMenuC2 = "SystemManageMenuC2",
 }
 
 export enum RoutePathEnum {
   Home = "/",
+  SystemManage = "/sys-manage",
   Login = "/login",
   Register = "/register",
   ForgotPassword = "/forgot-password",
@@ -43,7 +46,9 @@ export enum MainContentRoutePath {
 
   // 系统管理
   SystemManage = "sys-manage",
-  SystemManageUser = "sys-manage/user",
-  SystemManageRole = "sys-manage/role",
-  SystemManageMenu = "sys-manage/menu",
+  SystemManageUser = "user",
+  SystemManageRole = "role",
+  SystemManageMenu = "menu",
+  SystemManageMenuC1 = "c1",
+  SystemManageMenuC2 = "c2",
 }

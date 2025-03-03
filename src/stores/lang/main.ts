@@ -26,7 +26,6 @@ export const useLanguageStore = defineStore(StoreKeyEnum.language, () => {
       language.value === LanguageCodeEnum.zh
         ? LanguageCodeEnum.en
         : LanguageCodeEnum.zh;
-    console.log(l);
     language.value = l;
     locale.value = l;
     eleLocale.value = l === LanguageCodeEnum.en ? en : zhCn;

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Logo from "@/components/share/Logo.vue";
-import MenuItems from "@/components/share/menu/Menu.vue";
+import MenuItems from "@/views/home/Menu.vue";
 import { RouteNameEnum } from "@/router/enum";
 import router from "@/router/main";
 import { getOrUpdateSystemResources } from "@/stores/user/utils";
@@ -8,9 +8,15 @@ import { ElMessage } from "element-plus";
 // import { useUserInfoStore } from "@/stores/user/main";
 // import { ElMessage } from "element-plus";
 import Main from "@/views/home/Main.vue";
-import Bar from "@/views/home/Bar.vue";
+import Bar from "@/views/home/bar/Bar.vue";
 import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
+import { useCustomizeSettingStore } from "@/stores/customize/main";
+import { CustomizeSettingKeyEnum } from "@/stores/customize/type";
+import { computed, toRef } from "vue";
+
+const useCustomizeSetting = useCustomizeSettingStore();
+
 const { t: $t } = useI18n();
 
 const systemResources = getOrUpdateSystemResources(true);
@@ -25,28 +31,43 @@ if (systemResources.length == 0) {
 }
 
 let route = useRoute();
-console.log(route.path);
 
-let collapseMenu = false;
+const menuExpanded = toRef(
+  useCustomizeSetting.getCustomizeSettingByKey(
+    CustomizeSettingKeyEnum.menuExpanded,
+  ),
+);
+
+const sideMenuClass = computed(() => {
+  return menuExpanded.value ? "" : "menu_fold";
+});
+
+const logoTitle = computed(() => {
+  let envLogoTitle = import.meta.env.VITE_LOGO_TITLE
+    ? import.meta.env.VITE_LOGO_TITLE
+    : "";
+  if (!menuExpanded.value) {
+    envLogoTitle = "";
+  }
+  return envLogoTitle;
+});
 </script>
 
 <template>
   <div class="layout_container">
-    <div class="side_menu">
-      <Logo logo-icon-name="-"></Logo>
-      <div class="menu">
-        <!-- 滚动组件 -->
-        <el-scrollbar class="scrollBar">
-          <el-menu :collapse="collapseMenu" :default-active="route.path">
-            <MenuItems :system-resources="systemResources!"></MenuItems>
-          </el-menu>
-        </el-scrollbar>
-      </div>
+    <div class="side_menu" :class="sideMenuClass">
+      <Logo logo-icon-name="logo" :logo-title="logoTitle"></Logo>
+      <!-- 滚动组件 -->
+      <el-scrollbar class="scrollBar">
+        <el-menu :collapse="!menuExpanded" :default-active="route.path">
+          <MenuItems :system-resources="systemResources!"></MenuItems>
+        </el-menu>
+      </el-scrollbar>
     </div>
-    <div class="header">
+    <div class="header" :class="sideMenuClass">
       <Bar></Bar>
     </div>
-    <div class="content">
+    <div class="content" :class="sideMenuClass">
       <Main></Main>
     </div>
   </div>
@@ -63,6 +84,7 @@ let collapseMenu = false;
     height: 100vh;
     background-color: $base-side-menu-background-color;
     color: $base-side-menu-text-color;
+    transition: all 0.1s;
 
     .scrollBar {
       width: 100%;
@@ -77,6 +99,10 @@ let collapseMenu = false;
         border-right: none;
       }
     }
+
+    &.menu_fold {
+      width: $base-menu-collapsed-width;
+    }
   }
 
   .header {
@@ -85,6 +111,12 @@ let collapseMenu = false;
     left: $base-menu-width;
     width: calc(100% - $base-menu-width);
     height: $base-header-height;
+    transition: all 0.1s;
+
+    &.menu_fold {
+      left: $base-menu-collapsed-width;
+      width: calc(100% - $base-menu-collapsed-width);
+    }
   }
 
   .content {
@@ -96,6 +128,12 @@ let collapseMenu = false;
     padding: 15px;
     box-sizing: border-box;
     overflow: auto;
+    transition: all 0.1s;
+
+    &.menu_fold {
+      left: $base-menu-collapsed-width;
+      width: calc(100% - $base-menu-collapsed-width);
+    }
   }
 }
 </style>

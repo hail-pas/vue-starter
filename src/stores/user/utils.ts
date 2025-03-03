@@ -1,7 +1,10 @@
 import { reqGetSystemResource } from "@/api/auth/auth";
+import type { SystemResource } from "@/api/auth/types";
 import { useUserInfoStore } from "@/stores/user/main";
 
-export function getOrUpdateSystemResources(forceUpdate: boolean = false) {
+export function getOrUpdateSystemResources(
+  forceUpdate: boolean = false,
+): SystemResource[] {
   let systemResources = useUserInfoStore().getSystemResources();
 
   systemResources.push({
@@ -50,7 +53,7 @@ export function getOrUpdateSystemResources(forceUpdate: boolean = false) {
 
   systemResources.push({
     id: 1n,
-    code: "system",
+    code: "systemManage",
     label: "系统管理",
     route_path: "/sys-manage",
     icon_path: "Tools",
@@ -62,7 +65,7 @@ export function getOrUpdateSystemResources(forceUpdate: boolean = false) {
     children: [
       {
         id: 2n,
-        code: "user",
+        code: "SystemManageUser",
         label: "用户管理",
         route_path: "/sys-manage/user",
         icon_path: "UserFilled",
@@ -75,7 +78,7 @@ export function getOrUpdateSystemResources(forceUpdate: boolean = false) {
       },
       {
         id: 3n,
-        code: "role",
+        code: "SystemManageRole",
         label: "角色管理",
         route_path: "/sys-manage/role",
         icon_path: "Lock",
@@ -89,7 +92,7 @@ export function getOrUpdateSystemResources(forceUpdate: boolean = false) {
       },
       {
         id: 4n,
-        code: "menu",
+        code: "SystemManageMenu",
         label: "菜单管理",
         route_path: "/sys-manage/menu",
         icon_path: "Menu",
@@ -98,7 +101,35 @@ export function getOrUpdateSystemResources(forceUpdate: boolean = false) {
         enabled: true,
         assignable: false,
         parent_id: 0n,
-        children: [],
+        children: [
+          {
+            id: 5n,
+            code: "SystemManageRole",
+            label: "菜单管理1",
+            route_path: "/sys-manage/menu/c1",
+            icon_path: "Lock",
+            type: "menu",
+            order_num: 3,
+            enabled: true,
+
+            assignable: false,
+            parent_id: 0n,
+            children: [],
+          },
+          {
+            id: 6n,
+            code: "SystemManageMenu",
+            label: "菜单管理2",
+            route_path: "/sys-manage/menu/c2",
+            icon_path: "Menu",
+            type: "menu",
+            order_num: 4,
+            enabled: true,
+            assignable: false,
+            parent_id: 0n,
+            children: [],
+          },
+        ],
       },
     ],
   });
@@ -116,4 +147,18 @@ export function getOrUpdateSystemResources(forceUpdate: boolean = false) {
     }
   });
   return systemResources;
+}
+
+export function getResourceByPath(path: string): SystemResource | null {
+  if (path === "/") {
+    path = "/index";
+  }
+
+  const filteredResources = getOrUpdateSystemResources().filter(
+    (resource) => resource.route_path === path,
+  );
+  if (filteredResources.length > 0) {
+    return filteredResources[0];
+  }
+  return null;
 }

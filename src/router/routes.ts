@@ -4,31 +4,6 @@ import {
   RoutePathEnum,
 } from "@/router/enum";
 
-const mainContentRoutes = [
-  {
-    path: MainContentRoutePath.Index,
-    name: RouteNameEnum.Index,
-    component: () => import("@/views/index/Index.vue"),
-  },
-
-  // 系统管理
-  {
-    path: MainContentRoutePath.SystemManageUser,
-    name: RouteNameEnum.SystemManageUser,
-    component: () => import("@/views/sys-manage/user/User.vue"),
-  },
-  {
-    path: MainContentRoutePath.SystemManageRole,
-    name: RouteNameEnum.SystemManageRole,
-    component: () => import("@/views/sys-manage/role/Role.vue"),
-  },
-  {
-    path: MainContentRoutePath.SystemManageMenu,
-    name: RouteNameEnum.SystemManageMenu,
-    component: () => import("@/views/sys-manage/menu/Menu.vue"),
-  },
-];
-
 export const constantRoutes = [
   {
     path: RoutePathEnum.Login,
@@ -49,7 +24,47 @@ export const constantRoutes = [
     path: RoutePathEnum.Home,
     name: RouteNameEnum.Home,
     component: () => import("@/views/home/Home.vue"),
-    children: mainContentRoutes,
+    children: [
+      {
+        path: MainContentRoutePath.Index,
+        name: RouteNameEnum.Index,
+        component: () => import("@/views/index/Index.vue"),
+      },
+    ],
+  },
+  {
+    path: RoutePathEnum.SystemManage,
+    name: RouteNameEnum.SystemManage,
+    component: () => import("@/views/home/Home.vue"),
+    children: [
+      {
+        path: MainContentRoutePath.SystemManageUser,
+        name: RouteNameEnum.SystemManageUser,
+        component: () => import("@/views/sys-manage/user/User.vue"),
+      },
+      {
+        path: MainContentRoutePath.SystemManageRole,
+        name: RouteNameEnum.SystemManageRole,
+        component: () => import("@/views/sys-manage/role/Role.vue"),
+      },
+      {
+        path: MainContentRoutePath.SystemManageMenu,
+        name: RouteNameEnum.SystemManageMenu,
+        component: () => import("@/views/sys-manage/menu/Menu.vue"),
+        children: [
+          // {
+          //   path: MainContentRoutePath.SystemManageMenu,
+          //   name: RouteNameEnum.SystemManageMenu,
+          //   component: () => import("@/views/sys-manage/menu/MenuA.vue"),
+          // },
+          // {
+          //   path: MainContentRoutePath.SystemManageMenu,
+          //   name: RouteNameEnum.SystemManageMenu,
+          //   component: () => import("@/views/sys-manage/menu/MenuB.vue"),
+          // }
+        ],
+      },
+    ],
   },
 
   // error pages
