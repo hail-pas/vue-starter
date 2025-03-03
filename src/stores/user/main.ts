@@ -8,7 +8,8 @@ export const useUserInfoStore = defineStore(StoreKeyEnum.userInfo, () => {
 
   let accountInfo: AccountInfo | null = null;
 
-  let systemResources: Array<SystemResource> = [];
+  const systemResourcesMap: Map<string, SystemResource> = new Map();
+  const systemResourcesFlatMap: Map<string, SystemResource> = new Map();
 
   function setToken(t: string) {
     token = t;
@@ -27,12 +28,31 @@ export const useUserInfoStore = defineStore(StoreKeyEnum.userInfo, () => {
     return accountInfo;
   }
 
-  function setSystemResources(sr: Array<SystemResource>) {
-    systemResources = sr;
+  function _setSystemResourcesFlatMap(sr: SystemResource) {
+    if (!sr) {
+      return;
+    }
+    systemResourcesFlatMap.set(sr.route_path, sr);
+    for (const subSr of sr.children) {
+      _setSystemResourcesFlatMap(subSr);
+    }
+  }
+
+  function setSystemResources(srs: Iterable<SystemResource>) {
+    for (const element of srs) {
+      systemResourcesMap.set(element.route_path, element);
+      _setSystemResourcesFlatMap(element);
+    }
   }
 
   function getSystemResources(): Array<SystemResource> {
-    return systemResources;
+    return Array.from(systemResourcesMap.values());
+  }
+
+  function getSystemResourcesByRoutePath(
+    routePath: string,
+  ): SystemResource | undefined {
+    return systemResourcesFlatMap.get(routePath);
   }
 
   return {
@@ -42,5 +62,6 @@ export const useUserInfoStore = defineStore(StoreKeyEnum.userInfo, () => {
     getAccountInfo,
     setSystemResources,
     getSystemResources,
+    getSystemResourcesByRoutePath,
   };
 });

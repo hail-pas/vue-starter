@@ -4,7 +4,6 @@ const { t: $t } = useI18n();
 </script>
 
 <template>
-  <h1>RouterView</h1>
   <RouterView v-slot="{ Component }">
     <template v-if="Component">
       <Transition name="fade">

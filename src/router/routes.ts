@@ -36,6 +36,7 @@ export const constantRoutes = [
     path: RoutePathEnum.SystemManage,
     name: RouteNameEnum.SystemManage,
     component: () => import("@/views/home/Home.vue"),
+    redirect: `${RoutePathEnum.SystemManage}/${MainContentRoutePath.SystemManageUser}`,
     children: [
       {
         path: MainContentRoutePath.SystemManageUser,
@@ -50,18 +51,19 @@ export const constantRoutes = [
       {
         path: MainContentRoutePath.SystemManageMenu,
         name: RouteNameEnum.SystemManageMenu,
-        component: () => import("@/views/sys-manage/menu/Menu.vue"),
+        component: () => import("@/views/sys-manage/menu/Index.vue"),
+        redirect: MainContentRoutePath.SystemManageMenuC1,
         children: [
-          // {
-          //   path: MainContentRoutePath.SystemManageMenu,
-          //   name: RouteNameEnum.SystemManageMenu,
-          //   component: () => import("@/views/sys-manage/menu/MenuA.vue"),
-          // },
-          // {
-          //   path: MainContentRoutePath.SystemManageMenu,
-          //   name: RouteNameEnum.SystemManageMenu,
-          //   component: () => import("@/views/sys-manage/menu/MenuB.vue"),
-          // }
+          {
+            path: MainContentRoutePath.SystemManageMenuC1,
+            name: RouteNameEnum.SystemManageMenuC1,
+            component: () => import("@/views/sys-manage/menu/MenuA.vue"),
+          },
+          {
+            path: MainContentRoutePath.SystemManageMenuC2,
+            name: RouteNameEnum.SystemManageMenuC2,
+            component: () => import("@/views/sys-manage/menu/MenuB.vue"),
+          },
         ],
       },
     ],
