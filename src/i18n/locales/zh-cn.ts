@@ -23,6 +23,12 @@ export default {
   home: {
     welcome: "欢迎",
     loading: "正在加载...",
+    btn: {
+      switchLanguage: "切换语言",
+      refresh: "刷新",
+      fullScreenControl: "全屏控制",
+      settings: "设置",
+    },
   },
   error: {
     serverError: "服务器错误",

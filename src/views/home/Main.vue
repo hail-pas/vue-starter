@@ -1,25 +1,29 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
+import { useLayoutSettingStore } from "@/stores/layout/main";
+import { LayoutSettingKeyEnum } from "@/stores/layout/type";
+import { computed } from "vue";
+
 const { t: $t } = useI18n();
+
+const useLayoutSetting = useLayoutSettingStore();
+
+const refreshTrigger = computed(() => {
+  return useLayoutSetting.getLayoutSettingByKey(
+    LayoutSettingKeyEnum.refreshTrigger,
+  );
+});
 </script>
 
 <template>
   <RouterView v-slot="{ Component }">
-    <template v-if="Component">
-      <Transition name="fade">
-        <KeepAlive>
-          <Suspense>
-            <!-- 主要内容 -->
-            <component :is="Component"></component>
-
-            <!-- 加载中状态 -->
-            <template #fallback>
-              {{ $t("home.loading") }}
-            </template>
-          </Suspense>
-        </KeepAlive>
-      </Transition>
-    </template>
+    <Transition name="fade">
+      <!-- 主要内容 -->
+      <component :is="Component" v-if="refreshTrigger"></component>
+      <template v-else>
+        {{ $t("home.loading") }}
+      </template>
+    </Transition>
   </RouterView>
 </template>
 

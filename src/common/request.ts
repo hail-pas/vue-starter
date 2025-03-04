@@ -4,6 +4,7 @@ import axios, {
 } from "axios";
 import { ElMessage } from "element-plus";
 import i18n from "@/i18n/main";
+import { useUserInfoStore } from "@/stores/user/main";
 
 const request = axios.create({
   baseURL: import.meta.env.VITE_API_BASE,
@@ -12,7 +13,7 @@ const request = axios.create({
 
 request.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const token = localStorage.getItem("token");
+    const token = useUserInfoStore().getToken();
     if (token && config.withCredentials) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -25,16 +26,27 @@ request.interceptors.request.use(
 
 request.interceptors.response.use(
   (response) => {
+    if (import.meta.env.DEV) {
+      console.log(response);
+    }
     if (response.data.code === 0) {
       return response.data;
     }
+    const errorMessage = response.data.message
+      ? response.data.message
+      : "响应数据格式异常";
     ElMessage({
       type: "error",
-      message: response.data.message,
+      message: errorMessage,
     });
-    return Promise.reject(response.data.message);
+    // return Promise.reject(errorMessage);
+    return new Promise(() => {});
   },
   (error) => {
+    if (import.meta.env.DEV) {
+      console.log(error);
+    }
+
     const status = error.response?.status;
     let errorMessage = i18n.global.t("error.unknownError");
 
@@ -63,7 +75,8 @@ request.interceptors.response.use(
       type: "error",
       message: errorMessage,
     });
-    return Promise.reject(errorMessage);
+    // return Promise.reject(errorMessage);
+    return new Promise(() => {});
   },
 );
 

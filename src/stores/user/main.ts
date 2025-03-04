@@ -3,8 +3,7 @@ import { type AccountInfo, type SystemResource } from "@/api/auth/types";
 import { StoreKeyEnum } from "@/stores/enum";
 
 export const useUserInfoStore = defineStore(StoreKeyEnum.userInfo, () => {
-  let token: string | null =
-    localStorage.getItem(StoreKeyEnum.userToken) || null;
+  let token: string | null = null;
 
   let accountInfo: AccountInfo | null = null;
 
@@ -17,14 +16,27 @@ export const useUserInfoStore = defineStore(StoreKeyEnum.userInfo, () => {
   }
 
   function getToken(): string | null {
+    if (!token) {
+      token = localStorage.getItem(StoreKeyEnum.userToken);
+    }
     return token;
   }
 
   function setAccountInfo(ai: AccountInfo) {
     accountInfo = ai;
+    localStorage.setItem(StoreKeyEnum.accountInfo, JSON.stringify(ai));
   }
 
   function getAccountInfo(): AccountInfo | null {
+    if (!accountInfo && localStorage.getItem(StoreKeyEnum.accountInfo)) {
+      try {
+        accountInfo = JSON.parse(
+          localStorage.getItem(StoreKeyEnum.accountInfo)!,
+        );
+      } catch {
+        /* empty */
+      }
+    }
     return accountInfo;
   }
 
@@ -52,7 +64,15 @@ export const useUserInfoStore = defineStore(StoreKeyEnum.userInfo, () => {
   function getSystemResourcesByRoutePath(
     routePath: string,
   ): SystemResource | undefined {
+    routePath = routePath == "/" ? "/index" : routePath;
     return systemResourcesFlatMap.get(routePath);
+  }
+
+  function clean() {
+    localStorage.clear();
+    accountInfo = null;
+    systemResourcesMap.clear();
+    systemResourcesFlatMap.clear();
   }
 
   return {
@@ -63,5 +83,6 @@ export const useUserInfoStore = defineStore(StoreKeyEnum.userInfo, () => {
     setSystemResources,
     getSystemResources,
     getSystemResourcesByRoutePath,
+    clean,
   };
 });

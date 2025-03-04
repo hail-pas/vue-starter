@@ -81,11 +81,13 @@ function _getGreeting() {
 const submitForm = async (formEl: FormInstance | undefined) => {
   loading.value = true;
   if (await validateForm(formEl)) {
-    reqLogin(loginData).then((res) => {
+    reqLogin(loginData).then(async (res) => {
       // 保存token到本地
-      useUserInfoStore().setToken(res.data.token);
+      let useUserInfo = useUserInfoStore();
+      useUserInfo.setToken(res.data.token);
+      useUserInfo.setAccountInfo(res.data.account);
 
-      const systemResources = getOrUpdateSystemResources(true);
+      let systemResources = await getOrUpdateSystemResources(true);
 
       if (systemResources.length == 0) {
         ElMessage({
@@ -267,7 +269,8 @@ function goForgetPassword() {
     }
 
     :deep(.el-form-item__error) {
-      font-size: 1em; /* 你可以根据需要调整字体大小 */
+      font-size: 1em;
+      /* 你可以根据需要调整字体大小 */
       font-weight: 500;
     }
 

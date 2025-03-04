@@ -1,6 +1,9 @@
 export enum StoreKeyEnum {
   userToken = "userToken",
   userInfo = "userInfo",
+  accountInfo = "accountInfo",
   language = "language",
-  customSetting = "customSetting",
+  layoutSetting = "layoutSetting",
+  systemResourcesMap = "systemResourcesMap",
+  systemResourcesFlatMap = "systemResourcesFlatMap",
 }

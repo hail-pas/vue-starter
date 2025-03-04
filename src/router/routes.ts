@@ -24,45 +24,46 @@ export const constantRoutes = [
     path: RoutePathEnum.Home,
     name: RouteNameEnum.Home,
     component: () => import("@/views/home/Home.vue"),
+    redirect: MainContentRoutePath.Index,
     children: [
       {
         path: MainContentRoutePath.Index,
         name: RouteNameEnum.Index,
         component: () => import("@/views/index/Index.vue"),
       },
-    ],
-  },
-  {
-    path: RoutePathEnum.SystemManage,
-    name: RouteNameEnum.SystemManage,
-    component: () => import("@/views/home/Home.vue"),
-    redirect: `${RoutePathEnum.SystemManage}/${MainContentRoutePath.SystemManageUser}`,
-    children: [
       {
-        path: MainContentRoutePath.SystemManageUser,
-        name: RouteNameEnum.SystemManageUser,
-        component: () => import("@/views/sys-manage/user/User.vue"),
-      },
-      {
-        path: MainContentRoutePath.SystemManageRole,
-        name: RouteNameEnum.SystemManageRole,
-        component: () => import("@/views/sys-manage/role/Role.vue"),
-      },
-      {
-        path: MainContentRoutePath.SystemManageMenu,
-        name: RouteNameEnum.SystemManageMenu,
-        component: () => import("@/views/sys-manage/menu/Index.vue"),
-        redirect: MainContentRoutePath.SystemManageMenuC1,
+        path: RoutePathEnum.SystemManage,
+        name: RouteNameEnum.SystemManage,
+        component: () => import("@/views/sys-manage/Index.vue"),
+        redirect: MainContentRoutePath.SystemManageUser,
         children: [
           {
-            path: MainContentRoutePath.SystemManageMenuC1,
-            name: RouteNameEnum.SystemManageMenuC1,
-            component: () => import("@/views/sys-manage/menu/MenuA.vue"),
+            path: MainContentRoutePath.SystemManageUser,
+            name: RouteNameEnum.SystemManageUser,
+            component: () => import("@/views/sys-manage/user/User.vue"),
           },
           {
-            path: MainContentRoutePath.SystemManageMenuC2,
-            name: RouteNameEnum.SystemManageMenuC2,
-            component: () => import("@/views/sys-manage/menu/MenuB.vue"),
+            path: MainContentRoutePath.SystemManageRole,
+            name: RouteNameEnum.SystemManageRole,
+            component: () => import("@/views/sys-manage/role/Role.vue"),
+          },
+          {
+            path: MainContentRoutePath.SystemManageMenu,
+            name: RouteNameEnum.SystemManageMenu,
+            component: () => import("@/views/sys-manage/menu/Index.vue"),
+            redirect: MainContentRoutePath.SystemManageMenuC1,
+            children: [
+              {
+                path: MainContentRoutePath.SystemManageMenuC1,
+                name: RouteNameEnum.SystemManageMenuC1,
+                component: () => import("@/views/sys-manage/menu/MenuA.vue"),
+              },
+              {
+                path: MainContentRoutePath.SystemManageMenuC2,
+                name: RouteNameEnum.SystemManageMenuC2,
+                component: () => import("@/views/sys-manage/menu/MenuB.vue"),
+              },
+            ],
           },
         ],
       },
@@ -99,7 +100,8 @@ export const constantRoutes = [
   {
     path: RoutePathEnum.NotMatched,
     name: RouteNameEnum.NotMatched,
-    redirect: RoutePathEnum.NotFound,
+    // redirect: RoutePathEnum.NotFound,
+    component: () => import("@/views/about/About.vue"),
   },
 ];
 

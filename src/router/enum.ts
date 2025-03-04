@@ -42,13 +42,13 @@ export enum RoutePathEnum {
 
 export enum MainContentRoutePath {
   // 主页
-  Index = "index",
+  Index = "/index",
 
   // 系统管理
-  SystemManage = "sys-manage",
-  SystemManageUser = "user",
-  SystemManageRole = "role",
-  SystemManageMenu = "menu",
-  SystemManageMenuC1 = "c1",
-  SystemManageMenuC2 = "c2",
+  SystemManage = "/sys-manage",
+  SystemManageUser = "/sys-manage/user",
+  SystemManageRole = "/sys-manage/role",
+  SystemManageMenu = "/sys-manage/menu",
+  SystemManageMenuC1 = "/sys-manage/menu/c1",
+  SystemManageMenuC2 = "/sys-manage/menu/c2",
 }

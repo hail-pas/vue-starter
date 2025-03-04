@@ -5,38 +5,38 @@ import { RouteNameEnum } from "@/router/enum";
 import router from "@/router/main";
 import { getOrUpdateSystemResources } from "@/stores/user/utils";
 import { ElMessage } from "element-plus";
-// import { useUserInfoStore } from "@/stores/user/main";
-// import { ElMessage } from "element-plus";
 import Main from "@/views/home/Main.vue";
 import Bar from "@/views/home/bar/Bar.vue";
 import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
-import { useCustomizeSettingStore } from "@/stores/customize/main";
-import { CustomizeSettingKeyEnum } from "@/stores/customize/type";
-import { computed, toRef } from "vue";
+import { useLayoutSettingStore } from "@/stores/layout/main";
+import { LayoutSettingKeyEnum } from "@/stores/layout/type";
+import { computed, onMounted, ref, toRef } from "vue";
 
-const useCustomizeSetting = useCustomizeSettingStore();
+const useLayoutSetting = useLayoutSettingStore();
 
 const { t: $t } = useI18n();
 
-const systemResources = getOrUpdateSystemResources(true);
-
-// 没有菜单跳转到forbidden
-if (systemResources.length == 0) {
-  ElMessage({
-    type: "error",
-    message: $t("login.sysResourceInvalid"),
-  });
-  router.push({ name: RouteNameEnum.Login });
-}
-
-let route = useRoute();
+const systemResources = ref();
 
 const menuExpanded = toRef(
-  useCustomizeSetting.getCustomizeSettingByKey(
-    CustomizeSettingKeyEnum.menuExpanded,
-  ),
+  useLayoutSetting.getLayoutSettingByKey(LayoutSettingKeyEnum.menuExpanded),
 );
+
+onMounted(async () => {
+  systemResources.value = await getOrUpdateSystemResources();
+  // 没有菜单跳转到forbidden
+  if (systemResources.value.length == 0) {
+    ElMessage({
+      type: "error",
+      message: $t("login.sysResourceInvalid"),
+    });
+    router.push({ name: RouteNameEnum.Login });
+    return;
+  }
+});
+
+let route = useRoute();
 
 const sideMenuClass = computed(() => {
   return menuExpanded.value ? "" : "menu_fold";

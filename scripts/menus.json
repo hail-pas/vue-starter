@@ -1,0 +1,95 @@
+[
+  {
+    "id": 1,
+    "code": "index",
+    "label": "首页",
+    "route_path": "/index",
+    "icon_path": "HomeFilled",
+    "type": "menu",
+    "order_num": 1,
+    "enabled": true,
+    "assignable": false,
+    "parent_id": 0,
+    "children": []
+  },
+  {
+    "id": 2,
+    "code": "systemManage",
+    "label": "系统管理",
+    "route_path": "/sys-manage",
+    "icon_path": "Tools",
+    "type": "menu",
+    "order_num": 1,
+    "enabled": true,
+    "assignable": false,
+    "parent_id": 0,
+    "children": [
+      {
+        "id": 3,
+        "code": "SystemManageUser",
+        "label": "用户管理",
+        "route_path": "/sys-manage/user",
+        "icon_path": "UserFilled",
+        "type": "menu",
+        "order_num": 2,
+        "enabled": true,
+        "assignable": false,
+        "parent_id": 2,
+        "children": []
+      },
+      {
+        "id": 4,
+        "code": "SystemManageRole",
+        "label": "角色管理",
+        "route_path": "/sys-manage/role",
+        "icon_path": "Lock",
+        "type": "menu",
+        "order_num": 2,
+        "enabled": true,
+        "assignable": false,
+        "parent_id": 2,
+        "children": []
+      },
+      {
+        "id": 5,
+        "code": "SystemManageMenu",
+        "label": "菜单管理",
+        "route_path": "/sys-manage/menu",
+        "icon_path": "Menu",
+        "type": "menu",
+        "order_num": 4,
+        "enabled": true,
+        "assignable": false,
+        "parent_id": 2,
+        "children": [
+          {
+            "id": 6,
+            "code": "SystemManageMenuC1",
+            "label": "菜单管理1",
+            "route_path": "/sys-manage/menu/c1",
+            "icon_path": "Lock",
+            "type": "menu",
+            "order_num": 3,
+            "enabled": true,
+            "assignable": false,
+            "parent_id": 5,
+            "children": []
+          },
+          {
+            "id": 7,
+            "code": "SystemManageMenuC2",
+            "label": "菜单管理2",
+            "route_path": "/sys-manage/menu/c2",
+            "icon_path": "Menu",
+            "type": "menu",
+            "order_num": 4,
+            "enabled": true,
+            "assignable": false,
+            "parent_id": 5,
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+]

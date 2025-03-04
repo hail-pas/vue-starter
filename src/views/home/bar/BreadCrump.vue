@@ -1,34 +1,37 @@
 <script setup lang="ts">
-import { useCustomizeSettingStore } from "@/stores/customize/main";
-import { CustomizeSettingKeyEnum } from "@/stores/customize/type";
+import { useLayoutSettingStore } from "@/stores/layout/main";
+import { LayoutSettingKeyEnum } from "@/stores/layout/type";
 // import { getOrUpdateSystemResources } from '@/stores/user/utils';
 import { useRoute } from "vue-router";
 import { useUserInfoStore } from "@/stores/user/main";
+import { computed, toRef } from "vue";
 
-const useCustomizeSetting = useCustomizeSettingStore();
+const useLayoutSetting = useLayoutSettingStore();
 
 let $route = useRoute();
 const userInfoStore = useUserInfoStore();
 
-// const systemResources = getOrUpdateSystemResources(true);
+const matchedRoutes = computed(() => {
+  return $route.matched.filter((i) => i.path! !== "/");
+});
+
+const menuExpanded = toRef(
+  useLayoutSettingStore().getLayoutSettingByKey(
+    LayoutSettingKeyEnum.menuExpanded,
+  ),
+);
 </script>
 
 <template>
-  <el-icon @click="useCustomizeSetting.toggleMenu" class="menu-control">
-    <component
-      :is="
-        useCustomizeSetting.getCustomizeSettingByKey(
-          CustomizeSettingKeyEnum.menuExpanded,
-        )?.value
-          ? 'Expand'
-          : 'Fold'
-      "
-    >
-    </component>
+  <el-icon
+    @click="useLayoutSetting.toggleSetting(LayoutSettingKeyEnum.menuExpanded)"
+    class="menu-control"
+  >
+    <component :is="menuExpanded ? 'Expand' : 'Fold'"> </component>
   </el-icon>
   <el-breadcrumb separator-icon="ArrowRight">
     <el-breadcrumb-item
-      v-for="(item, index) in $route.matched"
+      v-for="(item, index) in matchedRoutes"
       :key="index"
       v-show="userInfoStore.getSystemResourcesByRoutePath(item.path)"
       :to="item.path"
@@ -41,11 +44,15 @@ const userInfoStore = useUserInfoStore();
           filled="black"
         ></component>
       </el-icon>
-      <span style="vertical-align: middle">{{
-        $t(
-          `menu.${userInfoStore.getSystemResourcesByRoutePath(item.path)?.code}`,
-        )
-      }}</span>
+      <span style="vertical-align: middle">
+        {{
+          userInfoStore.getSystemResourcesByRoutePath(item.path)
+            ? $t(
+                `menu.${userInfoStore.getSystemResourcesByRoutePath(item.path)?.code}`,
+              )
+            : ""
+        }}</span
+      >
     </el-breadcrumb-item>
   </el-breadcrumb>
 </template>

@@ -23,6 +23,12 @@ export default {
   home: {
     welcome: "Welcome",
     loading: "Loading...",
+    btn: {
+      switchLanguage: "Switch Language",
+      refresh: "Refresh",
+      fullScreenControl: "Full Screen Control",
+      settings: "Settings",
+    },
   },
   error: {
     serverError: "Server error",
