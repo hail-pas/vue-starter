@@ -36,6 +36,7 @@ export default {
     forbidden: "Forbidden",
     badRequest: "Request parameters error",
     unknownError: "Unknown error",
+    wrongResponseValue: "Wrong response value",
     wrongInputValue: "Please check the input value",
   },
   menu: {

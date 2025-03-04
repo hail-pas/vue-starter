@@ -10,8 +10,7 @@ import Bar from "@/views/home/bar/Bar.vue";
 import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
 import { useLayoutSettingStore } from "@/stores/layout/main";
-import { LayoutSettingKeyEnum } from "@/stores/layout/type";
-import { computed, onMounted, ref, toRef } from "vue";
+import { computed, onMounted, ref } from "vue";
 
 const useLayoutSetting = useLayoutSettingStore();
 
@@ -19,9 +18,9 @@ const { t: $t } = useI18n();
 
 const systemResources = ref();
 
-const menuExpanded = toRef(
-  useLayoutSetting.getLayoutSettingByKey(LayoutSettingKeyEnum.menuExpanded),
-);
+const menuExpanded = computed(() => {
+  return useLayoutSetting.getLayoutSetting().menuExpanded;
+});
 
 onMounted(async () => {
   systemResources.value = await getOrUpdateSystemResources();

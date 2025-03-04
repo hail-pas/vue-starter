@@ -10,15 +10,40 @@ export const useUserInfoStore = defineStore(StoreKeyEnum.userInfo, () => {
   const systemResourcesMap: Map<string, SystemResource> = new Map();
   const systemResourcesFlatMap: Map<string, SystemResource> = new Map();
 
+  function _initialize() {
+    token = localStorage.getItem(StoreKeyEnum.userToken);
+    let cachedSystemResources: Array<SystemResource> = [];
+    if (localStorage.getItem(StoreKeyEnum.systemResourcesMap)) {
+      try {
+        cachedSystemResources = JSON.parse(
+          localStorage.getItem(StoreKeyEnum.systemResourcesMap)!,
+        );
+        if (cachedSystemResources.length > 0) {
+          setSystemResources(cachedSystemResources);
+        }
+      } catch {
+        /* empty*/
+      }
+    }
+    if (localStorage.getItem(StoreKeyEnum.accountInfo)) {
+      try {
+        accountInfo = JSON.parse(
+          localStorage.getItem(StoreKeyEnum.accountInfo)!,
+        );
+      } catch {
+        /* empty */
+      }
+    }
+  }
+
+  _initialize();
+
   function setToken(t: string) {
     token = t;
     localStorage.setItem(StoreKeyEnum.userToken, token);
   }
 
   function getToken(): string | null {
-    if (!token) {
-      token = localStorage.getItem(StoreKeyEnum.userToken);
-    }
     return token;
   }
 
@@ -28,15 +53,6 @@ export const useUserInfoStore = defineStore(StoreKeyEnum.userInfo, () => {
   }
 
   function getAccountInfo(): AccountInfo | null {
-    if (!accountInfo && localStorage.getItem(StoreKeyEnum.accountInfo)) {
-      try {
-        accountInfo = JSON.parse(
-          localStorage.getItem(StoreKeyEnum.accountInfo)!,
-        );
-      } catch {
-        /* empty */
-      }
-    }
     return accountInfo;
   }
 
@@ -55,6 +71,7 @@ export const useUserInfoStore = defineStore(StoreKeyEnum.userInfo, () => {
       systemResourcesMap.set(element.route_path, element);
       _setSystemResourcesFlatMap(element);
     }
+    localStorage.setItem(StoreKeyEnum.systemResourcesMap, JSON.stringify(srs));
   }
 
   function getSystemResources(): Array<SystemResource> {

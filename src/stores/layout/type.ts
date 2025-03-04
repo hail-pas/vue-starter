@@ -1,9 +1,7 @@
-import type { Ref } from "vue";
-
 export interface LayoutSetting {
-  [key: string]: Ref<boolean>;
-  menuExpanded: Ref<boolean, boolean>;
-  refreshTrigger: Ref<boolean, boolean>;
+  [key: string]: boolean;
+  menuExpanded: boolean;
+  refreshTrigger: boolean;
 }
 
 export enum LayoutSettingKeyEnum {

@@ -36,6 +36,7 @@ export default {
     forbidden: "禁止访问",
     badRequest: "请求参数错误",
     unknownError: "未知错误",
+    wrongResponseValue: "响应数据格式异常",
     wrongInputValue: "请检查输入值",
   },
   menu: {

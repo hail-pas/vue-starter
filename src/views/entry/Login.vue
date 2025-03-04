@@ -3,8 +3,8 @@ import { User, Lock } from "@element-plus/icons-vue";
 import { type LoginSchema } from "@/api/auth/types";
 import type { FormInstance, FormRules } from "element-plus";
 import { useI18n } from "vue-i18n";
-import { useRouter } from "vue-router";
-import { RouteNameEnum } from "@/router/enum";
+import { useRoute, useRouter, type RouteLocationRaw } from "vue-router";
+import { MainContentRoutePath, RouteNameEnum } from "@/router/enum";
 import { useLanguageStore } from "@/stores/lang/main";
 import { reactive, ref } from "vue";
 import SvgIcon from "@/components/global/SvgIcon.vue";
@@ -12,8 +12,11 @@ import { reqLogin } from "@/api/auth/auth";
 import { ElMessage, ElNotification } from "element-plus";
 import { useUserInfoStore } from "@/stores/user/main";
 import { getOrUpdateSystemResources } from "@/stores/user/utils";
+import { isValidEnum } from "@/common/utils";
 
 const router = useRouter();
+
+const route = useRoute();
 
 const langStore = useLanguageStore();
 
@@ -98,7 +101,17 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         return;
       }
 
-      router.push({ name: RouteNameEnum.Home });
+      const redirectPath = route.query.redirect;
+      console.log(redirectPath);
+
+      let routePushParam: RouteLocationRaw = { name: RouteNameEnum.Home };
+      if (isValidEnum(MainContentRoutePath, redirectPath?.toString())) {
+        routePushParam = {
+          path: redirectPath!.toString(),
+        };
+      }
+
+      router.push(routePushParam);
 
       ElNotification({
         type: "success",

@@ -4,22 +4,25 @@ import { LayoutSettingKeyEnum } from "@/stores/layout/type";
 // import { getOrUpdateSystemResources } from '@/stores/user/utils';
 import { useRoute } from "vue-router";
 import { useUserInfoStore } from "@/stores/user/main";
-import { computed, toRef } from "vue";
+import { computed, onMounted } from "vue";
+import { getOrUpdateSystemResources } from "@/stores/user/utils";
 
 const useLayoutSetting = useLayoutSettingStore();
 
 let $route = useRoute();
 const userInfoStore = useUserInfoStore();
 
+onMounted(async () => {
+  await getOrUpdateSystemResources();
+});
+
 const matchedRoutes = computed(() => {
   return $route.matched.filter((i) => i.path! !== "/");
 });
 
-const menuExpanded = toRef(
-  useLayoutSettingStore().getLayoutSettingByKey(
-    LayoutSettingKeyEnum.menuExpanded,
-  ),
-);
+const menuExpanded = computed(() => {
+  return useLayoutSettingStore().getLayoutSetting().menuExpanded;
+});
 </script>
 
 <template>

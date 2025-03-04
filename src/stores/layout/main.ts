@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { StoreKeyEnum } from "@/stores/enum";
-import { ref, type Ref } from "vue";
+import { reactive, type Reactive } from "vue";
 import {
   type LayoutSettingKeyEnum,
   type LayoutSetting,
@@ -9,42 +9,49 @@ import {
 export const useLayoutSettingStore = defineStore(
   StoreKeyEnum.layoutSetting,
   () => {
-    const layoutSetting: LayoutSetting = {
-      menuExpanded: ref(true),
-      refreshTrigger: ref(true),
-    };
+    const layoutSetting: Reactive<LayoutSetting> = _initialize();
 
-    function toggleSetting(settingKey: LayoutSettingKeyEnum) {
-      layoutSetting[settingKey].value = !layoutSetting[settingKey].value;
-      localStorage.setItem(StoreKeyEnum.layoutSetting, JSON.stringify(layoutSetting));
-    }
-
-    function getLayoutSettingByKey(
-      key: LayoutSettingKeyEnum,
-    ): Ref<boolean, boolean> | Ref<string, string> | undefined {
-      if (!localStorage.getItem(StoreKeyEnum.layoutSetting)) {
+    function _initialize(): Reactive<LayoutSetting> {
+      const ls: LayoutSetting = {
+        menuExpanded: true,
+        refreshTrigger: true,
+      };
+      if (localStorage.getItem(StoreKeyEnum.layoutSetting)) {
         try {
           const layoutSettingCached = JSON.parse(
             localStorage.getItem(StoreKeyEnum.layoutSetting)!,
           );
-          console.log(layoutSettingCached);
-
-          for (const key in layoutSetting) {
-            console.log("type: ", key, typeof layoutSettingCached[key]);
-
+          for (const key in ls) {
             if (typeof layoutSettingCached[key] == "boolean") {
-              layoutSetting[key] = ref(layoutSettingCached[key]);
+              ls[key] = layoutSettingCached[key];
             }
           }
         } catch {
           /* empty */
         }
       }
-      return layoutSetting[key];
+      return reactive(ls);
     }
+
+    function toggleSetting(settingKey: LayoutSettingKeyEnum) {
+      layoutSetting[settingKey] = !layoutSetting[settingKey];
+      _cacheToLocal();
+    }
+
+    function _cacheToLocal() {
+      localStorage.setItem(
+        StoreKeyEnum.layoutSetting,
+        JSON.stringify(layoutSetting),
+      );
+    }
+
+    function getLayoutSetting() {
+      return layoutSetting;
+    }
+
     return {
       toggleSetting,
-      getLayoutSettingByKey,
+      getLayoutSetting,
     };
   },
 );

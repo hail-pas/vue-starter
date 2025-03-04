@@ -34,7 +34,7 @@ request.interceptors.response.use(
     }
     const errorMessage = response.data.message
       ? response.data.message
-      : "响应数据格式异常";
+      : i18n.global.t("error.wrongResponseValue");
     ElMessage({
       type: "error",
       message: errorMessage,

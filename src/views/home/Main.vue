@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 import { useLayoutSettingStore } from "@/stores/layout/main";
-import { LayoutSettingKeyEnum } from "@/stores/layout/type";
 import { computed } from "vue";
 
 const { t: $t } = useI18n();
@@ -9,9 +8,7 @@ const { t: $t } = useI18n();
 const useLayoutSetting = useLayoutSettingStore();
 
 const refreshTrigger = computed(() => {
-  return useLayoutSetting.getLayoutSettingByKey(
-    LayoutSettingKeyEnum.refreshTrigger,
-  );
+  return useLayoutSetting.getLayoutSetting().refreshTrigger;
 });
 </script>
 
