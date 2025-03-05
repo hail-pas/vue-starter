@@ -40,7 +40,7 @@ const logout = () => {
   router.push({ name: RouteNameEnum.Login, query: { redirect: route.path } });
 };
 
-const DEFAULT_AVATAR = "https://avatars.githubusercontent.com/u/42133281?v=4";
+// const DEFAULT_AVATAR = "https://avatars.githubusercontent.com/u/42133281?v=4";
 const DEFAULT_USERNAME = "admin";
 
 const avatarPath = computed(() => {
@@ -95,7 +95,9 @@ const username = computed(() => {
     icon="Setting"
     circle
   ></el-button>
-  <img :src="avatarPath ? avatarPath : DEFAULT_AVATAR" />
+  <img :src="avatarPath" v-if="avatarPath" />
+  <!-- <div class="avartar" v-else>{{ (username ? username : DEFAULT_USERNAME).slice(0, 2).toUpperCase() }}</div> -->
+  <div class="avartar" v-else>{{ "潘泓奇".slice(0, 2).toUpperCase() }}</div>
   <el-dropdown>
     <span class="el-dropdown-link">
       hi,
@@ -122,6 +124,17 @@ const username = computed(() => {
 img {
   height: 2rem;
   border-radius: 1rem;
+  margin-left: 0.4rem;
+  margin-right: 0.2rem;
+}
+.avartar {
+  font-size: 0.8rem;
+  background-color: rgba(79, 161, 206, 0.54);
+  border-radius: 50%;
+  line-height: 2rem;
+  text-align: center;
+  height: 2rem;
+  width: 2rem;
   margin-left: 0.4rem;
   margin-right: 0.2rem;
 }
