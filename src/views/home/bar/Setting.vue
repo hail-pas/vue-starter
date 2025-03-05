@@ -8,6 +8,7 @@ import router from "@/router/main";
 import { RouteNameEnum } from "@/router/enum";
 import { useUserInfoStore } from "@/stores/user/main";
 import { useRoute } from "vue-router";
+import { reqLogout } from "@/api/auth/auth";
 
 const { t: $t } = useI18n();
 
@@ -35,7 +36,14 @@ let useUserInfo = useUserInfoStore();
 
 let route = useRoute();
 
-const logout = () => {
+const logout = async () => {
+    // 退出登录
+  try {
+    await reqLogout()
+  } catch {
+    return
+  }
+
   useUserInfo.clean();
   router.push({ name: RouteNameEnum.Login, query: { redirect: route.path } });
 };

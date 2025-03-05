@@ -7,7 +7,7 @@ import i18n from "@/i18n/main";
 import { useUserInfoStore } from "@/stores/user/main";
 
 const request = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE,
+  baseURL: import.meta.env.VITE_API_PREFIX,
   timeout: 5000,
 });
 
@@ -39,8 +39,8 @@ request.interceptors.response.use(
       type: "error",
       message: errorMessage,
     });
-    // return Promise.reject(errorMessage);
-    return new Promise(() => {});
+    return Promise.reject(new Error(errorMessage));
+    // return new Promise(() => {});
   },
   (error) => {
     if (import.meta.env.DEV) {
@@ -75,8 +75,8 @@ request.interceptors.response.use(
       type: "error",
       message: errorMessage,
     });
-    // return Promise.reject(errorMessage);
-    return new Promise(() => {});
+    return Promise.reject(new Error(errorMessage));
+    // return new Promise(() => {});
   },
 );
 

@@ -25,6 +25,14 @@ export const reqLogin = (data: LoginSchema) =>
     withCredentials: false,
   });
 
+export const reqLogout = () =>
+    http.post<Response<null>>(APIV1.LOGOUT, undefined, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    });
+
 export const reqGetSystemResource = (
   param: SystemResourceFilterSchema | null = null,
 ) => {

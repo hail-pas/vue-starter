@@ -129,6 +129,7 @@ const logoTitle = computed(() => {
     width: calc(100% - $base-menu-width);
     height: $base-header-height;
     transition: all 0.1s;
+    border-bottom: solid 1px;
 
     &.menu_fold {
       left: $base-menu-collapsed-width;

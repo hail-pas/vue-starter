@@ -1,4 +1,4 @@
-import { UserConfigExport } from "vite";
+import { UserConfigExport, loadEnv } from "vite";
 
 import vue from "@vitejs/plugin-vue";
 
@@ -9,7 +9,18 @@ import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 // https://vite.dev/config/
 // { command }: ConfigEnv
 
-export default (): UserConfigExport => {
+export default (params: {
+  command: string;
+  mode: string;
+  isSsrBuild: boolean;
+  isPreview: boolean;
+}): UserConfigExport => {
+  console.log("cmd: ", params.command);
+  console.log("mode: ", params.mode);
+
+  const env = loadEnv(params.mode, `${process.cwd()}/etc`);
+  console.log(env);
+
   return {
     plugins: [
       vue(),
@@ -42,10 +53,11 @@ export default (): UserConfigExport => {
       strictPort: true,
       // https: false,
       proxy: {
-        "/api": {
-          target: "http://localhost:8000",
+        [env.VITE_API_PREFIX]: {
+          target: env.VITE_API_SERVER,
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, ""),
+          rewrite: (path) =>
+            path.replace(new RegExp(`^${env.VITE_API_PREFIX}`), ""),
         },
       },
     },
