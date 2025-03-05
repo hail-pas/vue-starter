@@ -16,10 +16,12 @@ const refreshTrigger = computed(() => {
   <RouterView v-slot="{ Component }">
     <Transition name="fade">
       <!-- 主要内容 -->
-      <component :is="Component" v-if="refreshTrigger"></component>
-      <template v-else>
+      <div v-if="refreshTrigger">
+        <component :is="Component"></component>
+      </div>
+      <div v-else>
         {{ $t("home.loading") }}
-      </template>
+      </div>
     </Transition>
   </RouterView>
 </template>

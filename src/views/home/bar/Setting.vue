@@ -37,11 +37,11 @@ let useUserInfo = useUserInfoStore();
 let route = useRoute();
 
 const logout = async () => {
-    // 退出登录
+  // 退出登录
   try {
-    await reqLogout()
+    await reqLogout();
   } catch {
-    return
+    return;
   }
 
   useUserInfo.clean();

@@ -18,7 +18,7 @@
     "axios": "^1.7.9",
     "css-loader": "^7.1.2",
     "date-fns": "^4.1.0",
-    "element-plus": "^2.9.3",
+    "element-plus": "^2.9.5",
     "nprogress": "^0.2.0",
     "pinia": "^2.3.1",
     "style-loader": "^4.0.0",
