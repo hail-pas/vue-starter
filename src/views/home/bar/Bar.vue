@@ -31,7 +31,13 @@ defineProps({
   height: 100%;
   display: flex;
   justify-content: space-between;
-  background-image: linear-gradient(to right, rgb(230, 241, 245), rgb(208, 234, 241), rgb(208, 234, 241), rgb(230, 241, 245));
+  background-image: linear-gradient(
+    to right,
+    rgb(230, 241, 245),
+    rgb(208, 234, 241),
+    rgb(208, 234, 241),
+    rgb(230, 241, 245)
+  );
 
   .left {
     display: flex;
