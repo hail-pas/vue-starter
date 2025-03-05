@@ -10,10 +10,11 @@ export enum RouteNameEnum {
   About = "About",
   NotMatched = "NotMatched",
 
-  // 主页
+  // Home 子路径
+  // == 主页
   Index = "Index",
 
-  // 系统管理
+  // == 系统管理
   SystemManage = "SystemManage",
   SystemManageUser = "SystemManageUser",
   SystemManageRole = "SystemManageRole",
@@ -24,7 +25,6 @@ export enum RouteNameEnum {
 
 export enum RoutePathEnum {
   Home = "/",
-  SystemManage = "/sys-manage",
   Login = "/login",
   Register = "/register",
   ForgotPassword = "/forgot-password",
@@ -52,3 +52,14 @@ export enum MainContentRoutePath {
   SystemManageMenuC1 = "/sys-manage/menu/c1",
   SystemManageMenuC2 = "/sys-manage/menu/c2",
 }
+
+const mainContentRoutePathValues: string[] =
+  Object.values(MainContentRoutePath);
+
+// 所有页面
+export const AllPath = mainContentRoutePathValues.concat(
+  Object.values(RoutePathEnum),
+);
+
+// 需要登录的页面
+export const LoginRequiredPath = mainContentRoutePathValues.concat([]);

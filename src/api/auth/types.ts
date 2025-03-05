@@ -21,6 +21,7 @@ export interface AccountInfo {
 
 export interface LoginResponse {
   token: string;
+  expired_at: string;
   account: AccountInfo;
 }
 

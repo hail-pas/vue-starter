@@ -10,7 +10,9 @@ import Bar from "@/views/home/bar/Bar.vue";
 import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
 import { useLayoutSettingStore } from "@/stores/layout/main";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
+import { showLogoTitleMinScreenWidth } from "@/common/globals";
+import { LayoutSettingKeyEnum } from "@/stores/layout/type";
 
 const useLayoutSetting = useLayoutSettingStore();
 
@@ -18,9 +20,19 @@ const { t: $t } = useI18n();
 
 const systemResources = ref();
 
+const minScreenWidth = showLogoTitleMinScreenWidth;
+const screenWidth = ref(window.innerWidth);
+
 const menuExpanded = computed(() => {
   return useLayoutSetting.getLayoutSetting().menuExpanded;
 });
+
+const handleResize = () => {
+  if (screenWidth.value < minScreenWidth && menuExpanded.value) {
+    useLayoutSetting.toggleSetting(LayoutSettingKeyEnum.menuExpanded);
+  }
+  screenWidth.value = window.innerWidth;
+};
 
 onMounted(async () => {
   systemResources.value = await getOrUpdateSystemResources();
@@ -33,6 +45,11 @@ onMounted(async () => {
     router.push({ name: RouteNameEnum.Login });
     return;
   }
+  window.addEventListener("resize", handleResize);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("resize", handleResize);
 });
 
 let route = useRoute();
@@ -96,6 +113,7 @@ const logoTitle = computed(() => {
         // --el-menu-hover-text-color: #409eff;
         // --el-menu-active-color: #409eff;
         border-right: none;
+        transition: all 0s;
       }
     }
 

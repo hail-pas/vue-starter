@@ -102,7 +102,6 @@ const submitForm = async (formEl: FormInstance | undefined) => {
       }
 
       const redirectPath = route.query.redirect;
-      console.log(redirectPath);
 
       let routePushParam: RouteLocationRaw = { name: RouteNameEnum.Home };
       if (isValidEnum(MainContentRoutePath, redirectPath?.toString())) {

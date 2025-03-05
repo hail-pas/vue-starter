@@ -32,7 +32,7 @@ export const constantRoutes = [
         component: () => import("@/views/index/Index.vue"),
       },
       {
-        path: RoutePathEnum.SystemManage,
+        path: MainContentRoutePath.SystemManage,
         name: RouteNameEnum.SystemManage,
         component: () => import("@/views/sys-manage/Index.vue"),
         redirect: MainContentRoutePath.SystemManageUser,

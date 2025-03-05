@@ -96,8 +96,9 @@ const username = computed(() => {
     circle
   ></el-button>
   <img :src="avatarPath" v-if="avatarPath" />
-  <!-- <div class="avartar" v-else>{{ (username ? username : DEFAULT_USERNAME).slice(0, 2).toUpperCase() }}</div> -->
-  <div class="avartar" v-else>{{ "潘泓奇".slice(0, 2).toUpperCase() }}</div>
+  <div class="avartar" v-else>
+    {{ (username ? username : DEFAULT_USERNAME).slice(0, 2).toUpperCase() }}
+  </div>
   <el-dropdown>
     <span class="el-dropdown-link">
       hi,

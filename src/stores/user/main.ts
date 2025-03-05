@@ -87,6 +87,7 @@ export const useUserInfoStore = defineStore(StoreKeyEnum.userInfo, () => {
 
   function clean() {
     localStorage.clear();
+    token = null;
     accountInfo = null;
     systemResourcesMap.clear();
     systemResourcesFlatMap.clear();

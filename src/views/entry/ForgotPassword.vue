@@ -1,9 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div>
-    <h1>Forgot Password</h1>
-  </div>
+  <h1>Forgot Password</h1>
 </template>
 
 <style lang="scss" scoped></style>
