@@ -87,8 +87,8 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     reqLogin(loginData).then(async (res) => {
       // 保存token到本地
       let useUserInfo = useUserInfoStore();
-      useUserInfo.setToken(res.data.token);
-      useUserInfo.setAccountInfo(res.data.account);
+      useUserInfo.setToken(res.data!.token);
+      useUserInfo.setAccountInfo(res.data!.account);
 
       let systemResources = await getOrUpdateSystemResources(true);
 
