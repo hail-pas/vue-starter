@@ -193,6 +193,20 @@ const deleteBtnHandler = async (id: number) => {
   //     // })
   //   })
 };
+const handleClick = (code: string) => {
+  const inputEle = document.getElementById(`bni-${code}`);
+  const spanEle = document.getElementById(`bns-${code}`);
+  inputEle?.classList.remove("hidden");
+  inputEle?.focus();
+  spanEle?.classList.add("hidden");
+};
+
+const inputBlurHandler = (code: string) => {
+  const inputEle = document.getElementById(`bni-${code}`);
+  const spanEle = document.getElementById(`bns-${code}`);
+  inputEle?.classList.add("hidden");
+  spanEle?.classList.remove("hidden");
+};
 </script>
 
 <template>
@@ -215,7 +229,15 @@ const deleteBtnHandler = async (id: number) => {
       <el-table-column label="品牌名" align="center">
         <!-- eslint-disable-next-line vue/valid-attribute-name -->
         <template #="{ row }">
-          <span>{{ row.label }}</span>
+          <input
+            :id="`bni-${row.code}`"
+            :value="row.label"
+            @blur="inputBlurHandler(row.code)"
+            class="hidden"
+          />
+          <span :id="`bns-${row.code}`" @click="handleClick(row.code)">{{
+            row.label
+          }}</span>
         </template>
       </el-table-column>
       <el-table-column label="描述" align="center" prop="description">
@@ -302,6 +324,14 @@ const deleteBtnHandler = async (id: number) => {
 </template>
 
 <style lang="scss" scoped>
+.hidden {
+  display: none;
+}
+
+input {
+  border-radius: 0.2rem;
+  padding: 0.3rem;
+}
 span {
   font-style: italic;
   font-weight: bold;
