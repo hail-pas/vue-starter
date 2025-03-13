@@ -231,7 +231,7 @@ const inputBlurHandler = (code: string) => {
         <template #="{ row }">
           <input
             :id="`bni-${row.code}`"
-            :value="row.label"
+            v-model="row.label"
             @blur="inputBlurHandler(row.code)"
             class="hidden"
           />
