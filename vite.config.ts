@@ -15,8 +15,8 @@ export default (params: {
   isSsrBuild: boolean;
   isPreview: boolean;
 }): UserConfigExport => {
-  console.log("cmd: ", params.command);
-  console.log("mode: ", params.mode);
+  // console.log("cmd: ", params.command);
+  // console.log("mode: ", params.mode);
 
   const env = loadEnv(params.mode, `${process.cwd()}/etc`);
   console.log(env);
