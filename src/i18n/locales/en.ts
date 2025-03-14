@@ -40,12 +40,41 @@ export default {
     wrongInputValue: "Please check the input value",
   },
   menu: {
-    index: "Index",
-    systemManage: "SystemManage",
+    Index: "Index",
+    SystemManage: "SystemManage",
     SystemManageUser: "UserManage",
     SystemManageRole: "RoleManage",
     SystemManageMenu: "MenuManage",
     SystemManageMenuC1: "MenuManageC1",
     SystemManageMenuC2: "MenuManageC2",
+  },
+  functionBtn: {
+    add: "Add New",
+    cancel: "Cancel",
+    reset: "Reset",
+    confirm: "Confirm",
+  },
+  main: {
+    // Main Content pages
+    orderNo: "No.",
+    id: "ID",
+    createdAt: "Created At",
+    updatedAt: "Updated At",
+    deletedAt: "Deleted At",
+    actions: "Actions",
+    confirmDelete: "Confirm Delete?",
+    inputTipPrefix: "Please input ",
+    selectTipPrefix: "Please select ",
+    badInputValueTipPrefix: "Please input correct ",
+    role: {
+      role: "Role",
+    },
+    user: {
+      user: "User",
+      username: "Username",
+      nickname: "Nickname",
+      phoneNumber: "Phone No",
+      nicknameLengthValidation: "Nickname length must be at 4 to 20",
+    },
   },
 };

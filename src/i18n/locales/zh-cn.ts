@@ -40,12 +40,41 @@ export default {
     wrongInputValue: "请检查输入值",
   },
   menu: {
-    index: "首页",
-    systemManage: "系统管理",
+    Index: "首页",
+    SystemManage: "系统管理",
     SystemManageUser: "用户管理",
     SystemManageRole: "角色管理",
     SystemManageMenu: "菜单管理",
     SystemManageMenuC1: "菜单管理C1",
     SystemManageMenuC2: "菜单管理C2",
+  },
+  functionBtn: {
+    add: "添加",
+    cancel: "取消",
+    reset: "重置",
+    confirm: "确认",
+  },
+  main: {
+    // Main Content pages
+    orderNo: "序号",
+    id: "ID",
+    createdAt: "创建时间",
+    updatedAt: "更新时间",
+    deletedAt: "删除时间",
+    actions: "操作",
+    confirmDelete: "确认删除?",
+    inputTipPrefix: "请输入",
+    selectTipPrefix: "请选择",
+    badInputValueTipPrefix: "请输入正确的",
+    role: {
+      role: "Role",
+    },
+    user: {
+      user: "用户",
+      username: "用户名",
+      nickname: "昵称",
+      phoneNumber: "手机号",
+      nicknameLengthValidation: "昵称长度必须在 4 到 20",
+    },
   },
 };

@@ -33,15 +33,9 @@ export const reqLogout = () =>
     withCredentials: true,
   });
 
-export const reqGetSystemResource = (
-  param: SystemResourceFilterSchema | null = null,
-) => {
-  const type = param ? param.type : "";
-  const parent_id = param ? param.parent_id : 0;
-  return http.get<Response<Array<SystemResource>>>(
-    `${APIV1.SYSTEM_RESOURCE}?type=${type}&parent_id=${parent_id}`,
-    {
-      withCredentials: true,
-    },
-  );
+export const reqGetSystemResource = (params?: SystemResourceFilterSchema) => {
+  return http.get<Response<Array<SystemResource>>>(APIV1.SYSTEM_RESOURCE, {
+    withCredentials: true,
+    params: params,
+  });
 };

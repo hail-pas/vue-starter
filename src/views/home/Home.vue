@@ -143,7 +143,7 @@ const logoTitle = computed(() => {
     height: calc(100vh - $base-header-height);
     top: $base-header-height;
     left: $base-menu-width;
-    padding: 15px;
+    padding: 1rem;
     box-sizing: border-box;
     overflow: auto;
     transition: all 0.1s;

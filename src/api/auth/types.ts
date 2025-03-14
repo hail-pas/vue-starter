@@ -10,7 +10,7 @@ export interface RegisterSchema {
 }
 
 export interface AccountInfo {
-  id: bigint;
+  id: number;
   username: string;
   name: string;
   phone: string;
@@ -26,13 +26,13 @@ export interface LoginResponse {
 }
 
 export interface SystemResourceFilterSchema {
-  type: string;
+  type?: string;
   // 为0，则筛选顶级菜单全层级
-  parent_id: bigint;
+  parent_id?: number;
 }
 
 export interface SystemResource {
-  id: bigint;
+  id: number;
   code: string;
   label: string;
   route_path: string;
@@ -41,6 +41,6 @@ export interface SystemResource {
   order_num: number;
   enabled: boolean;
   assignable: boolean;
-  parent_id: bigint;
+  parent_id: number;
   children: Array<SystemResource>;
 }
