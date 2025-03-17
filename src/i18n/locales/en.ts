@@ -67,6 +67,7 @@ export default {
     inputTipPrefix: "Please input ",
     selectTipPrefix: "Please select ",
     badInputValueTipPrefix: "Please input correct ",
+    operationSuccess: "Operation Success",
     role: {
       role: "Role",
     },

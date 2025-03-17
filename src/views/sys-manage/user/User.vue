@@ -199,7 +199,7 @@ const createConfirmBtnHandler = async () => {
 
   ElMessage({
     type: "success",
-    message: "操作成功",
+    message: $t('main.operationSuccess'),
   });
   createDialogVisible.value = false;
   await getUserList();
@@ -262,7 +262,7 @@ const updateConfirmBtnHandler = async () => {
 
   ElMessage({
     type: "success",
-    message: "操作成功",
+    message: $t('main.operationSuccess'),
   });
   updateDialogVisible.value = false;
   await getUserList();

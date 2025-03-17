@@ -67,6 +67,7 @@ export default {
     inputTipPrefix: "请输入",
     selectTipPrefix: "请选择",
     badInputValueTipPrefix: "请输入正确的",
+    operationSuccess: "操作成功",
     role: {
       role: "角色",
     },
