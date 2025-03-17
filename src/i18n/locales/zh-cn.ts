@@ -50,6 +50,7 @@ export default {
   },
   functionBtn: {
     add: "添加",
+    edit: "修改",
     cancel: "取消",
     reset: "重置",
     confirm: "确认",
@@ -67,7 +68,7 @@ export default {
     selectTipPrefix: "请选择",
     badInputValueTipPrefix: "请输入正确的",
     role: {
-      role: "Role",
+      role: "角色",
     },
     user: {
       user: "用户",

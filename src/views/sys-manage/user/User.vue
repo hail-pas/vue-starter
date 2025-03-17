@@ -3,17 +3,23 @@ import type {
   UserListFilterSchema,
   UserList,
   UserCreateSchema,
+  UserUpdateSchema,
 } from "@/api/user/types";
-// import { reqGetUserList } from '@/api/user/user';
-import { onMounted, reactive, ref, type Ref } from "vue";
+import {} from "@/api/user/user";
+import { nextTick, onMounted, reactive, ref, type Ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { setAllPropertiesToUndefined } from "@/common/utils";
 import type { RoleList } from "@/api/role/types";
 // import { reqDeleteUser } from '@/api/user/user';
 import { ElMessage, type FormInstance, type FormRules } from "element-plus";
 import { validatePhoneNumber } from "@/common/validators";
-// import { reqGetRoleList } from '@/api/role/role';
-// import { reqGetRoleList } from '@/api/role/role';
+import {
+  reqGetUserList,
+  reqCreateUser,
+  reqUpdateUser,
+  reqDeleteUser,
+} from "@/api/user/user";
+import { reqGetRoleList } from "@/api/role/role";
 
 const { t: $t } = useI18n();
 // read
@@ -29,47 +35,46 @@ onMounted(async () => {
   await getUserList();
 });
 
-async function getRoleList() {
-  // (roleName?: string) {
-  // const resp = await reqGetRoleList({label: roleName})
-  // roleList.value = resp.data!.records!;
-  roleList.value = [
-    {
-      id: 1,
-      label: "超级管理员",
-      created_at: "",
-      updated_at: "",
-    },
-    {
-      id: 2,
-      label: "普通管理员",
-      created_at: "",
-      updated_at: "",
-    },
-  ];
+async function getRoleList(roleName?: string) {
+  const resp = await reqGetRoleList({ label: roleName });
+  roleList.value = resp.data!.records!;
+  // roleList.value = [
+  //   {
+  //     id: 1,
+  //     label: "超级管理员",
+  //     created_at: "",
+  //     updated_at: "",
+  //   },
+  //   {
+  //     id: 2,
+  //     label: "普通管理员",
+  //     created_at: "",
+  //     updated_at: "",
+  //   },
+  // ];
 }
 
 async function getUserList() {
-  // const resp = await reqGetUserList(userListFilterSchema.value)
-  // userList.value = resp.data!.records!;\
+  const resp = await reqGetUserList(userListFilterSchema.value);
+  userList.value = resp.data!.records!;
 
-  userList.value = [
-    {
-      id: 1,
-      username: "phoenix",
-      nickname: "phoenix",
-      phone: "18059247212",
-      role: {
-        id: 1,
-        label: "超级管理员",
-        created_at: "2025-03-13 00:00:00",
-        updated_at: "2025-03-13 00:00:00",
-      },
-      is_super_admin: true,
-      created_at: "2025-03-13 00:00:00",
-      updated_at: "2025-03-13 00:00:00",
-    },
-  ];
+  // userList.value = [
+  //   {
+  //     id: 1,
+  //     username: "phoenix",
+  //     nickname: "phoenix",
+  //     phone: "18059247212",
+  //     role: {
+  //       id: 1,
+  //       label: "超级管理员",
+  //       created_at: "2025-03-13 00:00:00",
+  //       updated_at: "2025-03-13 00:00:00",
+  //     },
+  //     is_super_admin: true,
+  //     created_at: "2025-03-13 00:00:00",
+  //     updated_at: "2025-03-13 00:00:00",
+  //   },
+  // ];
 }
 
 const resetBtnHandler = () => {
@@ -78,7 +83,12 @@ const resetBtnHandler = () => {
 
 // deletee
 const deleteBtnHandler = async (id: number) => {
-  // await reqDeleteUser(id);
+  try {
+    await reqDeleteUser(id);
+  } catch {
+    return;
+  }
+
   console.log("deleted", id);
   ElMessage({
     type: "success",
@@ -166,27 +176,97 @@ const createRules = reactive<FormRules<UserCreateSchema>>({
   ],
 });
 
-// const clearCreateFormData = () => {
-
-// }
+const createBtnHandler = () => {
+  createDialogVisible.value = true;
+  createFormRef.value?.resetFields();
+  nextTick(() => {
+    createFormRef.value?.clearValidate();
+  });
+};
 
 const createConfirmBtnHandler = async () => {
-  console.log(createFormData);
-
   try {
     await createFormRef.value!.validate();
   } catch {
     return;
   }
-  console.log(">>>>>>>>>>>>>", createFormData);
 
+  try {
+    await reqCreateUser(createFormData);
+  } catch {
+    return;
+  }
+
+  ElMessage({
+    type: "success",
+    message: "操作成功",
+  });
   createDialogVisible.value = false;
+  await getUserList();
 };
 
 // update
-function editBtnHandler(item: UserList) {
-  console.log(item);
+const updateDialogVisible = ref(false);
+const updateDialogTitle = ref(
+  $t("functionBtn.edit") + " " + $t("main.user.user"),
+);
+let updateFormData: UserUpdateSchema;
+const updateFormRef = ref<FormInstance>();
+
+const updateRules = reactive<FormRules<UserUpdateSchema>>({
+  nickname: [
+    {
+      required: true,
+      message: () => $t("main.inputTipPrefix") + $t("main.user.nickname"),
+      trigger: "change",
+    },
+    {
+      min: 4,
+      max: 20,
+      message: () => $t("main.user.nicknameLengthValidation"),
+      trigger: "change",
+    },
+  ],
+  role_id: [
+    {
+      required: true,
+      message: () => $t("main.selectTipPrefix") + $t("main.role.role"),
+      trigger: "change",
+    },
+  ],
+});
+
+async function editBtnHandler(item: UserList) {
+  updateFormData = reactive<UserUpdateSchema>({
+    id: item.id,
+    nickname: item.nickname,
+    role_id: item.role.id,
+  });
+  await getRoleList();
+  updateDialogVisible.value = true;
+  updateFormRef.value?.clearValidate();
 }
+
+const updateConfirmBtnHandler = async () => {
+  try {
+    await updateFormRef.value!.validate();
+  } catch {
+    return;
+  }
+
+  try {
+    await reqUpdateUser(updateFormData);
+  } catch {
+    return;
+  }
+
+  ElMessage({
+    type: "success",
+    message: "操作成功",
+  });
+  updateDialogVisible.value = false;
+  await getUserList();
+};
 </script>
 
 <template>
@@ -246,12 +326,9 @@ function editBtnHandler(item: UserList) {
 
   <!-- 内容展示区 -->
   <el-card class="content-card">
-    <el-button
-      type="primary"
-      zise="default"
-      @click="createDialogVisible = true"
-      >{{ $t("functionBtn.add") }}</el-button
-    >
+    <el-button type="primary" zise="default" @click="createBtnHandler">{{
+      $t("functionBtn.add")
+    }}</el-button>
     <el-table :data="userList">
       <!-- <el-table-column type="selection" align="center"></el-table-column> -->
       <el-table-column
@@ -372,10 +449,58 @@ function editBtnHandler(item: UserList) {
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="createDialogVisible = !createDialogVisible">{{
+        <el-button @click="createDialogVisible = false">{{
           $t("functionBtn.cancel")
         }}</el-button>
         <el-button type="primary" @click="createConfirmBtnHandler">
+          {{ $t("functionBtn.confirm") }}
+        </el-button>
+      </div>
+    </template>
+  </el-dialog>
+
+  <!-- update dialog -->
+  <el-dialog v-model="updateDialogVisible" :title="updateDialogTitle">
+    <el-form
+      :model="updateFormData"
+      label-position="right"
+      ref="updateFormRef"
+      :rules="updateRules"
+      label-width="auto"
+      status-icon
+    >
+      <el-form-item :label="$t('main.user.nickname')" prop="nickname">
+        <el-input
+          v-model="updateFormData.nickname"
+          :placeholder="$t('main.inputTipPrefix') + $t('main.user.nickname')"
+        >
+        </el-input>
+      </el-form-item>
+      <el-form-item :label="$t('main.role.role')" prop="role_id">
+        <el-select
+          v-model="updateFormData.role_id"
+          filterable
+          remote
+          :remote-method="getRoleList"
+          clearable
+          remote-show-suffix
+          :placeholder="$t('main.selectTipPrefix') + $t('main.role.role')"
+        >
+          <el-option
+            v-for="item in roleList"
+            :key="item.id"
+            :label="item.label"
+            :value="item.id"
+          />
+        </el-select>
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="updateDialogVisible = false">{{
+          $t("functionBtn.cancel")
+        }}</el-button>
+        <el-button type="primary" @click="updateConfirmBtnHandler">
           {{ $t("functionBtn.confirm") }}
         </el-button>
       </div>

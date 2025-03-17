@@ -50,6 +50,7 @@ export default {
   },
   functionBtn: {
     add: "Add New",
+    edit: "Edit",
     cancel: "Cancel",
     reset: "Reset",
     confirm: "Confirm",

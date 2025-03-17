@@ -1,6 +1,11 @@
-import type { UserListFilterSchema, UserList } from "@/api/user/types";
+import type {
+  UserListFilterSchema,
+  UserList,
+  UserCreateSchema,
+  UserUpdateSchema,
+} from "@/api/user/types";
 import { http } from "@/common/request";
-import { type PageResponse } from "@/api/types";
+import { type PageResponse, type Response } from "@/api/types";
 
 enum APIV1 {
   USER = "/v1/user",
@@ -19,5 +24,17 @@ export const reqDeleteUser = (id: number) => {
     params: {
       id: id,
     },
+  });
+};
+
+export const reqCreateUser = (data: UserCreateSchema) => {
+  return http.post<Response<null>>(APIV1.USER, data, {
+    withCredentials: true,
+  });
+};
+
+export const reqUpdateUser = (data: UserUpdateSchema) => {
+  return http.put<Response<null>>(APIV1.USER, data, {
+    withCredentials: true,
   });
 };

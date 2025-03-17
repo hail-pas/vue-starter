@@ -29,6 +29,7 @@ export interface UserCreateSchema {
 }
 
 export interface UserUpdateSchema {
+  id: number;
   nickname: string;
   role_id: number;
 }
