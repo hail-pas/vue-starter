@@ -19,7 +19,7 @@ export const reqGetUserList = (params?: UserListFilterSchema) => {
 };
 
 export const reqDeleteUser = (id: number) => {
-  return http.delete<PageResponse<UserList>>(APIV1.USER, {
+  return http.delete<PageResponse<null>>(APIV1.USER, {
     withCredentials: true,
     params: {
       id: id,

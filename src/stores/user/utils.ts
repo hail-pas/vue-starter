@@ -1,4 +1,4 @@
-import { reqGetSystemResource } from "@/api/auth/auth";
+import { reqGetMySystemResource } from "@/api/auth/auth";
 import type { SystemResource } from "@/api/auth/types";
 import { useUserInfoStore } from "@/stores/user/main";
 
@@ -15,8 +15,8 @@ export async function getOrUpdateSystemResources(
     return systemResources;
   }
 
-  await reqGetSystemResource().then((res) => {
-    if (res.data.length > 0) {
+  await reqGetMySystemResource().then((res) => {
+    if (res.data) {
       useUserInfoStore().setSystemResources(res.data);
       systemResources = res.data;
     }

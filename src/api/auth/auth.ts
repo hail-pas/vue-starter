@@ -33,7 +33,7 @@ export const reqLogout = () =>
     withCredentials: true,
   });
 
-export const reqGetSystemResource = (params?: SystemResourceFilterSchema) => {
+export const reqGetMySystemResource = (params?: SystemResourceFilterSchema) => {
   return http.get<Response<Array<SystemResource>>>(APIV1.SYSTEM_RESOURCE, {
     withCredentials: true,
     params: params,

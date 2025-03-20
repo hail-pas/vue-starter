@@ -8,3 +8,11 @@ export interface RoleList {
 export interface RoleListFilterSchema {
   label?: string;
 }
+
+export interface RoleCreateSchema {
+  label: string;
+}
+
+export interface RoleUpdateSchema {
+  label: string;
+}
