@@ -2,6 +2,7 @@
 import type { SystemResourceFilterSchema } from "@/api/auth/types";
 import {
   reqCreateSystemResource,
+  reqDeleteSystemResource,
   reqGetSystemResourceList,
   reqUpdateSystemResource,
 } from "@/api/sys-resource/main";
@@ -41,9 +42,112 @@ const listFilterSchema = reactive<SystemResourceFilterSchema>({
 });
 
 const getlistData = async () => {
-  const resp = await reqGetSystemResourceList(listFilterSchema);
-  listData.value = resp.data!.records!;
-  total.value = resp.data?.page_info.total_count || 0;
+  // const resp = await reqGetSystemResourceList(listFilterSchema);
+  // listData.value = resp.data!.records!;
+  listData.value = [
+    {
+      id: 1,
+      code: "index",
+      label: "首页",
+      route_path: "/index",
+      icon_path: "HomeFilled",
+      type: "menu",
+      order_num: 1,
+      enabled: true,
+      assignable: false,
+      parent_id: 0,
+      children: [],
+      order: 0,
+    },
+    {
+      id: 2,
+      code: "systemManage",
+      label: "系统管理",
+      route_path: "/sys-manage",
+      icon_path: "Tools",
+      type: "menu",
+      order_num: 1,
+      enabled: true,
+      assignable: false,
+      parent_id: 0,
+      children: [
+        {
+          id: 3,
+          code: "SystemManageUser",
+          label: "用户管理",
+          route_path: "/sys-manage/user",
+          icon_path: "UserFilled",
+          type: "menu",
+          order_num: 2,
+          enabled: true,
+          assignable: false,
+          parent_id: 2,
+          children: [],
+          order: 0,
+        },
+        {
+          id: 4,
+          code: "SystemManageRole",
+          label: "角色管理",
+          route_path: "/sys-manage/role",
+          icon_path: "Lock",
+          type: "menu",
+          order_num: 2,
+          enabled: true,
+          assignable: false,
+          parent_id: 2,
+          children: [],
+          order: 0,
+        },
+        {
+          id: 5,
+          code: "SystemManageMenu",
+          label: "菜单管理",
+          route_path: "/sys-manage/menu",
+          icon_path: "Menu",
+          type: "menu",
+          order_num: 4,
+          enabled: true,
+          assignable: false,
+          parent_id: 2,
+          children: [
+            {
+              id: 6,
+              code: "SystemManageMenuC1",
+              label: "菜单管理1",
+              route_path: "/sys-manage/menu/c1",
+              icon_path: "Lock",
+              type: "menu",
+              order_num: 3,
+              enabled: true,
+              assignable: false,
+              parent_id: 5,
+              children: [],
+              order: 0,
+            },
+            {
+              id: 7,
+              code: "SystemManageMenuC2",
+              label: "菜单管理2",
+              route_path: "/sys-manage/menu/c2",
+              icon_path: "Menu",
+              type: "menu",
+              order_num: 4,
+              enabled: true,
+              assignable: false,
+              parent_id: 5,
+              children: [],
+              order: 0,
+            },
+          ],
+          order: 0,
+        },
+      ],
+      order: 0,
+    },
+  ];
+
+  // total.value = resp.data?.page_info.total_count || 0;
 };
 
 onMounted(async () => {
@@ -57,7 +161,7 @@ const resetBtnHandler = () => {
 // Create
 const createDialogVisible = ref(false);
 const createDialogTitle = ref(
-  $t("functionBtn.add") + " " + $t("main.user.user"),
+  $t("functionBtn.add") + " " + $t("main.sysResource.label"),
 );
 const dropDownListData: Ref<SystemResourceList[], SystemResourceList[]> = ref(
   [],
@@ -192,15 +296,14 @@ const updateRules = reactive<FormRules<SystemResourceUpdateSchema>>({
 });
 
 const editBtnHandler = async (item: SystemResourceList) => {
-  console.log(item);
   updateFormData = reactive<SystemResourceUpdateSchema>({
     id: item.id,
     label: item.label,
     order: item.order,
   });
-  if (dropDownListData.value.length <= 0) {
-    await getDropDownListData();
-  }
+  // if (dropDownListData.value.length <= 0) {
+  //   await getDropDownListData();
+  // }
   updateDialogVisible.value = true;
   updateFormRef.value?.clearValidate();
 };
@@ -227,8 +330,28 @@ const updateConfirmBtnHandler = async () => {
 };
 
 // Delete
-const deleteBtnHandler = (id: number) => {
-  console.log(id);
+const deleteBtnDisabled = ref(false);
+const deleteBtnHandler = async (id: number) => {
+  try {
+    deleteBtnDisabled.value = true;
+    await reqDeleteSystemResource(id);
+  } catch {
+    deleteBtnDisabled.value = false;
+    return;
+  }
+
+  ElMessage({
+    type: "success",
+    message: "删除成功",
+  });
+
+  listFilterSchema.page =
+    listData.value.length > 1 || listFilterSchema.page === 1
+      ? listFilterSchema.page
+      : listFilterSchema.page - 1;
+
+  await getlistData();
+  deleteBtnDisabled.value = false;
 };
 </script>
 
@@ -276,9 +399,11 @@ const deleteBtnHandler = (id: number) => {
     <el-button type="primary" zise="default" @click="createBtnHandler">{{
       $t("functionBtn.add")
     }}</el-button>
-    <el-table :data="listData">
+    <el-table :data="listData" row-key="id">
       <!-- <el-table-column type="selection" align="center"></el-table-column> -->
       <el-table-column type="index" align="center"></el-table-column>
+      <el-table-column prop="date" label="Date" sortable />
+      <el-table-column prop="name" label="Name" sortable />
       <el-table-column :label="$t('main.actions')" align="center">
         <!-- eslint-disable-next-line vue/valid-attribute-name -->
         <template #="{ row }">
@@ -292,6 +417,7 @@ const deleteBtnHandler = (id: number) => {
           <el-popconfirm
             title="确认删除"
             icon="Delete"
+            :disabled="deleteBtnDisabled"
             @confirm="deleteBtnHandler(row.id)"
           >
             <template #reference>

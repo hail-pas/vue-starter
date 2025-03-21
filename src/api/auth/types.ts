@@ -1,4 +1,5 @@
 import type { PageFilterSchema } from "@/api/types";
+import type { SystemResourceList } from "@/api/sys-resource/types";
 
 export interface LoginSchema {
   username: string;
@@ -33,16 +34,4 @@ export interface SystemResourceFilterSchema extends PageFilterSchema {
   parent_id?: number;
 }
 
-export interface SystemResource {
-  id: number;
-  code: string;
-  label: string;
-  route_path: string;
-  icon_path: string;
-  type: string;
-  order_num: number;
-  enabled: boolean;
-  assignable: boolean;
-  parent_id: number;
-  children: Array<SystemResource>;
-}
+export type SystemResource = SystemResourceList;

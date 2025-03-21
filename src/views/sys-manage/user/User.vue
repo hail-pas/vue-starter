@@ -83,10 +83,13 @@ async function getlistData() {
 }
 
 // deletee
+const deleteBtnDisabled = ref(false);
 const deleteBtnHandler = async (id: number) => {
   try {
+    deleteBtnDisabled.value = true;
     await reqDeleteUser(id);
   } catch {
+    deleteBtnDisabled.value = false;
     return;
   }
 
@@ -101,6 +104,7 @@ const deleteBtnHandler = async (id: number) => {
       : listFilterSchema.page - 1;
 
   await getlistData();
+  deleteBtnDisabled.value = false;
 };
 
 // create
@@ -360,7 +364,7 @@ const updateConfirmBtnHandler = async () => {
         align="center"
         prop="created_at"
       ></el-table-column>
-      <el-table-column :label="$t('main.actions')" align="center">
+      <el-table-column :label="$t('main.actions')" align="center" fixed="right">
         <!-- eslint-disable-next-line vue/valid-attribute-name -->
         <template #="{ row }">
           <el-button
@@ -373,6 +377,7 @@ const updateConfirmBtnHandler = async () => {
           <el-popconfirm
             title="确认删除"
             icon="Delete"
+            :disabled="deleteBtnDisabled"
             @confirm="deleteBtnHandler(row.id)"
           >
             <template #reference>

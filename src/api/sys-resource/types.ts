@@ -8,10 +8,16 @@ export interface SystemResourceListFilterSchema extends PageFilterSchema {
 
 export interface SystemResourceList {
   id: number;
-  parent_id: number | null;
   code: string;
-  type: string;
   label: string;
+  route_path: string;
+  icon_path: string;
+  type: string;
+  order_num: number;
+  enabled: boolean;
+  assignable: boolean;
+  parent_id: number;
+  children: Array<SystemResourceList>;
   order: number;
 }
 
