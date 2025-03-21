@@ -58,7 +58,11 @@ export default {
   main: {
     // Main Content pages
     orderNo: "序号",
+    ascSortOrder: "升序排序序号",
     id: "ID",
+    type: "类型",
+    code: "唯一编码",
+    label: "名称",
     createdAt: "创建时间",
     updatedAt: "更新时间",
     deletedAt: "删除时间",
@@ -77,6 +81,15 @@ export default {
       nickname: "昵称",
       phoneNumber: "手机号",
       nicknameLengthValidation: "昵称长度必须在 4 到 20",
+    },
+    sysResource: {
+      label: "系统资源",
+      menu: "菜单",
+      button: "按钮",
+      api: "API",
+      parentSysResource: "父资源节点",
+      codeLengthValidation: "唯一编码长度必须在 4 到 20",
+      labelLengthValidation: "名称长度必须在 2 到 20",
     },
   },
 };

@@ -58,7 +58,11 @@ export default {
   main: {
     // Main Content pages
     orderNo: "No.",
+    ascSortOrder: "ASC Sort Order",
     id: "ID",
+    type: "Type",
+    code: "Unique Code",
+    label: "Label",
     createdAt: "Created At",
     updatedAt: "Updated At",
     deletedAt: "Deleted At",
@@ -77,6 +81,15 @@ export default {
       nickname: "Nickname",
       phoneNumber: "Phone No",
       nicknameLengthValidation: "Nickname length must be at 4 to 20",
+    },
+    sysResource: {
+      label: "System Resource",
+      menu: "Menu",
+      button: "Button",
+      api: "API",
+      parentSysResource: "Parent Node",
+      codeLengthValidation: "Unique Code length must be at 4 to 16",
+      labelLengthValidation: "Label length must be at 2 to 16",
     },
   },
 };

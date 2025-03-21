@@ -1,3 +1,5 @@
+import type { PageFilterSchema } from "@/api/types";
+
 export interface LoginSchema {
   username: string;
   password: string;
@@ -25,7 +27,7 @@ export interface LoginResponse {
   account: AccountInfo;
 }
 
-export interface SystemResourceFilterSchema {
+export interface SystemResourceFilterSchema extends PageFilterSchema {
   type?: string;
   // 为0，则筛选顶级菜单全层级
   parent_id?: number;

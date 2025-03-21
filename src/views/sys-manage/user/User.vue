@@ -24,16 +24,19 @@ import { reqGetRoleList } from "@/api/role/role";
 const { t: $t } = useI18n();
 // read
 const total = ref(0);
-const userListFilterSchema = reactive<UserListFilterSchema>({
+const listFilterSchema = reactive<UserListFilterSchema>({
   page: 1,
   size: 10,
 });
+const resetBtnHandler = () => {
+  setAllPropertiesToUndefined(listFilterSchema, ["page", "size"]);
+};
 
 const roleList: Ref<RoleList[], RoleList[]> = ref([]);
-const userList: Ref<UserList[], UserList[]> = ref([]);
+const listData: Ref<UserList[], UserList[]> = ref([]);
 
 onMounted(async () => {
-  await getUserList();
+  await getlistData();
 });
 
 async function getRoleList(roleName?: string) {
@@ -55,9 +58,9 @@ async function getRoleList(roleName?: string) {
   // ];
 }
 
-async function getUserList() {
-  const resp = await reqGetUserList(userListFilterSchema);
-  userList.value = resp.data!.records!;
+async function getlistData() {
+  const resp = await reqGetUserList(listFilterSchema);
+  listData.value = resp.data!.records!;
   total.value = resp.data?.page_info.total_count || 0;
 
   // userList.value = [
@@ -79,10 +82,6 @@ async function getUserList() {
   // ];
 }
 
-const resetBtnHandler = () => {
-  setAllPropertiesToUndefined(userListFilterSchema, ["page", "size"]);
-};
-
 // deletee
 const deleteBtnHandler = async (id: number) => {
   try {
@@ -91,18 +90,17 @@ const deleteBtnHandler = async (id: number) => {
     return;
   }
 
-  console.log("deleted", id);
   ElMessage({
     type: "success",
     message: "删除成功",
   });
 
-  userListFilterSchema.page =
-    userList.value.length > 1 || userListFilterSchema.page === 1
-      ? userListFilterSchema.page
-      : userListFilterSchema.page - 1;
+  listFilterSchema.page =
+    listData.value.length > 1 || listFilterSchema.page === 1
+      ? listFilterSchema.page
+      : listFilterSchema.page - 1;
 
-  await getUserList();
+  await getlistData();
 };
 
 // create
@@ -204,7 +202,7 @@ const createConfirmBtnHandler = async () => {
     message: $t("main.operationSuccess"),
   });
   createDialogVisible.value = false;
-  await getUserList();
+  await getlistData();
 };
 
 // update
@@ -244,7 +242,9 @@ async function editBtnHandler(item: UserList) {
     nickname: item.nickname,
     role_id: item.role.id,
   });
-  await getRoleList();
+  if (roleList.value.length <= 0) {
+    await getRoleList();
+  }
   updateDialogVisible.value = true;
   updateFormRef.value?.clearValidate();
 }
@@ -267,19 +267,19 @@ const updateConfirmBtnHandler = async () => {
     message: $t("main.operationSuccess"),
   });
   updateDialogVisible.value = false;
-  await getUserList();
+  await getlistData();
 };
 </script>
 
 <template>
   <!-- 过滤项 -->
   <el-card class="filter-card">
-    <el-form :model="userListFilterSchema" :inline="true">
+    <el-form :model="listFilterSchema" :inline="true">
       <div>
         <el-form-item :label="$t('main.user.username')" prop="username">
           <el-input
             :placeholder="$t('main.inputTipPrefix') + $t('main.user.username')"
-            v-model="userListFilterSchema.username"
+            v-model="listFilterSchema.username"
           ></el-input>
         </el-form-item>
         <el-form-item :label="$t('main.user.phoneNumber')" prop="phone">
@@ -287,12 +287,12 @@ const updateConfirmBtnHandler = async () => {
             :placeholder="
               $t('main.inputTipPrefix') + $t('main.user.phoneNumber')
             "
-            v-model="userListFilterSchema.phone"
+            v-model="listFilterSchema.phone"
           ></el-input>
         </el-form-item>
         <el-form-item :label="$t('main.role.role')">
           <el-select
-            v-model="userListFilterSchema.role_id"
+            v-model="listFilterSchema.role_id"
             filterable
             remote
             :remote-method="getRoleList"
@@ -316,7 +316,7 @@ const updateConfirmBtnHandler = async () => {
             zise="default"
             circle
             icon="Search"
-            @click="getUserList"
+            @click="getlistData"
           ></el-button>
           <el-button type="primary" zise="default" @click="resetBtnHandler">{{
             $t("functionBtn.reset")
@@ -331,13 +331,9 @@ const updateConfirmBtnHandler = async () => {
     <el-button type="primary" zise="default" @click="createBtnHandler">{{
       $t("functionBtn.add")
     }}</el-button>
-    <el-table :data="userList">
+    <el-table :data="listData">
       <!-- <el-table-column type="selection" align="center"></el-table-column> -->
-      <el-table-column
-        type="index"
-        :label="$t('main.orderNo')"
-        align="center"
-      ></el-table-column>
+      <el-table-column type="index" align="center"></el-table-column>
       <!-- <el-table-column :label='$t("main.id")' align="center" prop="id"></el-table-column> -->
       <el-table-column
         :label="$t('main.user.username')"
@@ -387,15 +383,15 @@ const updateConfirmBtnHandler = async () => {
       </el-table-column>
     </el-table>
     <el-pagination
-      v-model:current-page="userListFilterSchema.page"
-      v-model:page-size="userListFilterSchema.size"
+      v-model:current-page="listFilterSchema.page"
+      v-model:page-size="listFilterSchema.size"
       :page-sizes="[1, 2, 3, 4, 10]"
       size="small"
       :disabled="false"
       :background="true"
       layout="prev, pager, next, jumper, ->, sizes, total"
       :total="total"
-      @change="getUserList"
+      @change="getlistData"
     />
   </el-card>
 
@@ -511,21 +507,5 @@ const updateConfirmBtnHandler = async () => {
 </template>
 
 <style lang="scss" scoped>
-.filter-card {
-  height: 4.5rem;
-
-  .el-form {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-}
-
-.content-card {
-  margin-top: 1rem;
-
-  .el-table {
-    margin-top: 1rem;
-  }
-}
+@use "@/styles/share/content-card.scss";
 </style>

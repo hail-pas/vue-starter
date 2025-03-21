@@ -1,0 +1,17 @@
+.filter-card {
+  height: 4.5rem;
+
+  .el-form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.content-card {
+  margin-top: 1rem;
+
+  .el-table {
+    margin-top: 1rem;
+  }
+}
