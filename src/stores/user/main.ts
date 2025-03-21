@@ -61,7 +61,7 @@ export const useUserInfoStore = defineStore(StoreKeyEnum.userInfo, () => {
       return;
     }
     systemResourcesFlatMap.set(sr.route_path, sr);
-    for (const subSr of sr.children) {
+    for (const subSr of sr.children || []) {
       _setSystemResourcesFlatMap(subSr);
     }
   }

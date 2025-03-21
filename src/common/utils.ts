@@ -14,9 +14,15 @@ export function isValidEnum<T extends Record<string, string | number>>(
 //   const formattedDate = parse(dateString, "yy-MM-dd HH:mm:ss", new Date());
 //   return isValid(formattedDate) ? formattedDate : null;
 // }
-export function setAllPropertiesToUndefined<T extends object>(obj: T) {
+export function setAllPropertiesToUndefined<T extends object>(
+  obj: T,
+  excludeFields: Array<string>,
+) {
   for (const key in obj) {
-    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+    if (
+      Object.prototype.hasOwnProperty.call(obj, key) &&
+      !excludeFields.includes(key)
+    ) {
       // 使用类型断言（如果明确知道属性存在）
       obj[key as keyof T] = undefined as never;
     }

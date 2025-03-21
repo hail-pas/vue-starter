@@ -27,7 +27,7 @@ export default {
   <template v-for="resource in systemResources" :key="resource.id.toString()">
     <template v-if="resource.enabled">
       <el-menu-item
-        v-if="resource.children.length == 0"
+        v-if="(resource.children || []).length == 0"
         :index="resource.route_path"
         :id="resource.id"
         @click="routeMain(resource.route_path)"
@@ -54,7 +54,7 @@ export default {
             {{ $t(`menu.${resource.code}`) }}
           </span>
         </template>
-        <MenuItems :system-resources="resource.children" />
+        <MenuItems :system-resources="resource.children || []" />
       </el-sub-menu>
     </template>
   </template>

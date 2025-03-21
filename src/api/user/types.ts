@@ -1,4 +1,5 @@
 import type { RoleList } from "@/api/role/types";
+import type { PageFilterSchema } from "@/api/types";
 
 export interface UserList {
   id: number;
@@ -12,7 +13,7 @@ export interface UserList {
   updated_at: string;
 }
 
-export interface UserListFilterSchema {
+export interface UserListFilterSchema extends PageFilterSchema {
   username?: string;
   username__like?: string;
   phone?: string;

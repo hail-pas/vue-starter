@@ -24,3 +24,8 @@ interface PageData<T> {
 export interface PageResponse<T> extends BaseResponse {
   data: PageData<T> | null;
 }
+
+export interface PageFilterSchema {
+  page: number;
+  size: number;
+}

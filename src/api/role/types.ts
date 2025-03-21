@@ -1,3 +1,5 @@
+import type { PageFilterSchema } from "@/api/types";
+
 export interface RoleList {
   id: number;
   label: string;
@@ -5,7 +7,7 @@ export interface RoleList {
   updated_at: string;
 }
 
-export interface RoleListFilterSchema {
+export interface RoleListFilterSchema extends PageFilterSchema {
   label?: string;
 }
 

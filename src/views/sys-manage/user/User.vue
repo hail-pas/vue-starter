@@ -23,10 +23,11 @@ import { reqGetRoleList } from "@/api/role/role";
 
 const { t: $t } = useI18n();
 // read
-const currentPage = ref(1);
-const pageSize = ref(10);
 const total = ref(0);
-const userListFilterSchema = ref<UserListFilterSchema>({});
+const userListFilterSchema = reactive<UserListFilterSchema>({
+  page: 1,
+  size: 10,
+});
 
 const roleList: Ref<RoleList[], RoleList[]> = ref([]);
 const userList: Ref<UserList[], UserList[]> = ref([]);
@@ -36,7 +37,7 @@ onMounted(async () => {
 });
 
 async function getRoleList(roleName?: string) {
-  const resp = await reqGetRoleList({ label: roleName });
+  const resp = await reqGetRoleList({ label: roleName, size: 100, page: 1 });
   roleList.value = resp.data!.records!;
   // roleList.value = [
   //   {
@@ -55,8 +56,9 @@ async function getRoleList(roleName?: string) {
 }
 
 async function getUserList() {
-  const resp = await reqGetUserList(userListFilterSchema.value);
+  const resp = await reqGetUserList(userListFilterSchema);
   userList.value = resp.data!.records!;
+  total.value = resp.data?.page_info.total_count || 0;
 
   // userList.value = [
   //   {
@@ -78,7 +80,7 @@ async function getUserList() {
 }
 
 const resetBtnHandler = () => {
-  setAllPropertiesToUndefined(userListFilterSchema.value);
+  setAllPropertiesToUndefined(userListFilterSchema, ["page", "size"]);
 };
 
 // deletee
@@ -95,10 +97,10 @@ const deleteBtnHandler = async (id: number) => {
     message: "删除成功",
   });
 
-  currentPage.value =
-    userList.value.length > 1 || currentPage.value === 1
-      ? currentPage.value
-      : currentPage.value - 1;
+  userListFilterSchema.page =
+    userList.value.length > 1 || userListFilterSchema.page === 1
+      ? userListFilterSchema.page
+      : userListFilterSchema.page - 1;
 
   await getUserList();
 };
@@ -385,8 +387,8 @@ const updateConfirmBtnHandler = async () => {
       </el-table-column>
     </el-table>
     <el-pagination
-      v-model:current-page="currentPage"
-      v-model:page-size="pageSize"
+      v-model:current-page="userListFilterSchema.page"
+      v-model:page-size="userListFilterSchema.size"
       :page-sizes="[1, 2, 3, 4, 10]"
       size="small"
       :disabled="false"

@@ -51,19 +51,19 @@ export const constantRoutes = [
             path: MainContentRoutePath.SystemManageMenu,
             name: RouteNameEnum.SystemManageMenu,
             component: () => import("@/views/sys-manage/menu/Index.vue"),
-            redirect: MainContentRoutePath.SystemManageMenuC1,
-            children: [
-              {
-                path: MainContentRoutePath.SystemManageMenuC1,
-                name: RouteNameEnum.SystemManageMenuC1,
-                component: () => import("@/views/sys-manage/menu/MenuA.vue"),
-              },
-              {
-                path: MainContentRoutePath.SystemManageMenuC2,
-                name: RouteNameEnum.SystemManageMenuC2,
-                component: () => import("@/views/sys-manage/menu/MenuB.vue"),
-              },
-            ],
+            // redirect: MainContentRoutePath.SystemManageMenuC1,
+            // children: [
+            //   {
+            //     path: MainContentRoutePath.SystemManageMenuC1,
+            //     name: RouteNameEnum.SystemManageMenuC1,
+            //     component: () => import("@/views/sys-manage/menu/MenuA.vue"),
+            //   },
+            //   {
+            //     path: MainContentRoutePath.SystemManageMenuC2,
+            //     name: RouteNameEnum.SystemManageMenuC2,
+            //     component: () => import("@/views/sys-manage/menu/MenuB.vue"),
+            //   },
+            // ],
           },
         ],
       },

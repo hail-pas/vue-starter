@@ -19,8 +19,8 @@ export enum RouteNameEnum {
   SystemManageUser = "SystemManageUser",
   SystemManageRole = "SystemManageRole",
   SystemManageMenu = "SystemManageMenu",
-  SystemManageMenuC1 = "SystemManageMenuC1",
-  SystemManageMenuC2 = "SystemManageMenuC2",
+  // SystemManageMenuC1 = "SystemManageMenuC1",
+  // SystemManageMenuC2 = "SystemManageMenuC2",
 }
 
 export enum RoutePathEnum {
@@ -49,8 +49,8 @@ export enum MainContentRoutePath {
   SystemManageUser = "/sys-manage/user",
   SystemManageRole = "/sys-manage/role",
   SystemManageMenu = "/sys-manage/menu",
-  SystemManageMenuC1 = "/sys-manage/menu/c1",
-  SystemManageMenuC2 = "/sys-manage/menu/c2",
+  // SystemManageMenuC1 = "/sys-manage/menu/c1",
+  // SystemManageMenuC2 = "/sys-manage/menu/c2",
 }
 
 const mainContentRoutePathValues: string[] =

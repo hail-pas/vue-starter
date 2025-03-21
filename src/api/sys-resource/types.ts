@@ -1,4 +1,6 @@
-export interface SystemResourceListFilterSchema {
+import type { PageFilterSchema } from "@/api/types";
+
+export interface SystemResourceListFilterSchema extends PageFilterSchema {
   type?: string;
   parent_id?: number;
 }
