@@ -63,6 +63,8 @@ export default {
     type: "Type",
     code: "Unique Code",
     label: "Label",
+    enabled: "Enabled",
+    detail: "Detail",
     createdAt: "Created At",
     updatedAt: "Updated At",
     deletedAt: "Deleted At",
@@ -72,8 +74,12 @@ export default {
     selectTipPrefix: "Please select ",
     badInputValueTipPrefix: "Please input correct ",
     operationSuccess: "Operation Success",
+    operationFailed: "Operation Failed",
+    operationLimited: "Operation Limited",
     role: {
       role: "Role",
+      labelLengthValidation: "Label length must be at 2 to 20",
+      detailUserList: "User List",
     },
     user: {
       user: "User",

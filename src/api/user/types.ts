@@ -17,7 +17,7 @@ export interface UserListFilterSchema extends PageFilterSchema {
   username?: string;
   username__like?: string;
   phone?: string;
-  role_id?: string;
+  role_id?: number;
   created_at__gte?: Date;
   created_at__lte?: Date;
 }
@@ -26,7 +26,7 @@ export interface UserCreateSchema {
   username: string;
   nickname: string;
   phone: string;
-  role_id: number | undefined;
+  role_id?: number;
 }
 
 export interface UserUpdateSchema {

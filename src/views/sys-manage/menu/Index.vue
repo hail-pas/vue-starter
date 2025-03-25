@@ -3,7 +3,6 @@ import type { SystemResourceFilterSchema } from "@/api/auth/types";
 import {
   reqCreateSystemResource,
   reqDeleteSystemResource,
-  reqGetSystemResourceList,
   reqUpdateSystemResource,
 } from "@/api/sys-resource/main";
 import type {
@@ -111,25 +110,11 @@ const getlistData = async () => {
           children: [
             {
               id: 6,
-              code: "SystemManageMenuC1",
-              label: "菜单管理1",
-              route_path: "/sys-manage/menu/c1",
-              icon_path: "Lock",
-              type: "menu",
-              order_num: 3,
-              enabled: true,
-              assignable: false,
-              parent_id: 5,
-              children: [],
-              order: 0,
-            },
-            {
-              id: 7,
-              code: "SystemManageMenuC2",
-              label: "菜单管理2",
-              route_path: "/sys-manage/menu/c2",
+              code: "SystemManageMenuAdd",
+              label: "菜单管理-add",
+              route_path: "",
               icon_path: "Menu",
-              type: "menu",
+              type: "button",
               order_num: 4,
               enabled: true,
               assignable: false,
@@ -166,21 +151,15 @@ const createFormData = reactive<SystemResourceCreateSchema>({
   type: "",
   label: "",
   order: 1,
+  enabled: true,
 });
 const createFormRef = ref<FormInstance>();
 
-const getDropDownListData = async (lebel?: string) => {
-  const resp = await reqGetSystemResourceList({
-    label: lebel,
-    page: 1,
-    size: 100,
-  });
-  dropDownListData.value = resp.data?.records || [];
-};
-
-const createBtnHandler = () => {
+const createBtnHandler = (item?: SystemResourceList) => {
   createDialogVisible.value = true;
   createFormRef.value?.resetFields();
+  createFormData.parent_id = item ? item.id : null;
+  dropDownListData.value = item ? [item] : [];
   nextTick(() => {
     createFormRef.value?.clearValidate();
   });
@@ -294,6 +273,7 @@ const editBtnHandler = async (item: SystemResourceList) => {
     id: item.id,
     label: item.label,
     order: item.order,
+    enabled: item.enabled,
   });
   // if (dropDownListData.value.length <= 0) {
   //   await getDropDownListData();
@@ -353,6 +333,12 @@ const deleteBtnHandler = async (id: number) => {
   <!-- <RouterView></RouterView> -->
   <!-- 内容展示区 -->
   <el-card class="content-card">
+    <el-button
+      type="primary"
+      zise="default"
+      @click="createBtnHandler(undefined)"
+      >{{ $t("functionBtn.add") }}</el-button
+    >
     <el-table :data="listData" row-key="id">
       <!-- <el-table-column type="selection" align="center"></el-table-column> -->
       <el-table-column type="index" align="center"></el-table-column>
@@ -363,11 +349,12 @@ const deleteBtnHandler = async (id: number) => {
         <!-- eslint-disable-next-line vue/valid-attribute-name -->
         <template #="{ row }">
           <el-button
+            v-if="row.type == 'menu'"
             type="primary"
             size="small"
             icon="Plus"
             circle
-            @click="createBtnHandler"
+            @click="createBtnHandler(row)"
           ></el-button>
           <el-button
             type="warning"
@@ -436,22 +423,18 @@ const deleteBtnHandler = async (id: number) => {
         >
         </el-input>
       </el-form-item>
+      <el-form-item :label="$t('main.enabled')" prop="enabled">
+        <el-switch v-model="createFormData.enabled" />
+      </el-form-item>
       <el-form-item :label="$t('main.ascSortOrder')" prop="order">
         <el-input-number v-model="createFormData.order" :min="1" />
       </el-form-item>
       <el-form-item
+        v-if="dropDownListData.length > 0"
         :label="$t('main.sysResource.parentSysResource')"
         prop="parent_id"
       >
-        <el-select
-          v-model="createFormData.parent_id"
-          filterable
-          remote
-          :remote-method="getDropDownListData"
-          clearable
-          remote-show-suffix
-          :placeholder="$t('main.selectTipPrefix') + $t('main.role.role')"
-        >
+        <el-select v-model="createFormData.parent_id" disabled>
           <el-option
             v-for="item in dropDownListData"
             :key="item.id"
@@ -489,6 +472,9 @@ const deleteBtnHandler = async (id: number) => {
           :placeholder="$t('main.inputTipPrefix') + $t('main.label')"
         >
         </el-input>
+      </el-form-item>
+      <el-form-item :label="$t('main.enabled')" prop="enabled">
+        <el-switch v-model="updateFormData.enabled" />
       </el-form-item>
       <el-form-item :label="$t('main.ascSortOrder')" prop="order">
         <el-input-number v-model="updateFormData.order" :min="1" />

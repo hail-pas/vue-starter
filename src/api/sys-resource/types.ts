@@ -4,6 +4,7 @@ export interface SystemResourceListFilterSchema extends PageFilterSchema {
   type?: string;
   label?: string;
   parent_id?: number;
+  role_id?: number;
 }
 
 export interface SystemResourceList {
@@ -27,10 +28,12 @@ export interface SystemResourceCreateSchema {
   type: string;
   label: string;
   order: number;
+  enabled: boolean;
 }
 
 export interface SystemResourceUpdateSchema {
   id: number;
   label: string;
   order: number;
+  enabled: boolean;
 }

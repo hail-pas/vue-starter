@@ -1,6 +1,7 @@
 import type {
   RoleListFilterSchema,
   RoleList,
+  RoleDetail,
   RoleCreateSchema,
   RoleUpdateSchema,
 } from "@/api/role/types";
@@ -15,6 +16,12 @@ export const reqGetRoleList = (params?: RoleListFilterSchema) => {
   return http.get<PageResponse<RoleList>>(APIV1.ROLE, {
     withCredentials: true,
     params: params,
+  });
+};
+
+export const reqGetRoleDetail = (id: number) => {
+  return http.get<Response<RoleDetail>>(`${APIV1.ROLE}/${id}`, {
+    withCredentials: true,
   });
 };
 

@@ -63,6 +63,8 @@ export default {
     type: "类型",
     code: "唯一编码",
     label: "名称",
+    enabled: "是否启用",
+    detail: "详情",
     createdAt: "创建时间",
     updatedAt: "更新时间",
     deletedAt: "删除时间",
@@ -72,8 +74,12 @@ export default {
     selectTipPrefix: "请选择",
     badInputValueTipPrefix: "请输入正确的",
     operationSuccess: "操作成功",
+    operationFailed: "操作失败",
+    operationLimited: "该操作受限",
     role: {
       role: "角色",
+      labelLengthValidation: "名称长度必须在 2 到 20",
+      detailUserList: "用戶列表",
     },
     user: {
       user: "用户",

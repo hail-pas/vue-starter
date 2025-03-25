@@ -22,11 +22,20 @@ import {
 import { reqGetRoleList } from "@/api/role/role";
 
 const { t: $t } = useI18n();
+
+const props = defineProps({
+  specify_role_id: {
+    type: Number,
+    default: 0,
+  },
+});
+
 // read
 const total = ref(0);
 const listFilterSchema = reactive<UserListFilterSchema>({
   page: 1,
   size: 10,
+  role_id: props.specify_role_id > 0 ? props.specify_role_id : undefined,
 });
 const resetBtnHandler = () => {
   setAllPropertiesToUndefined(listFilterSchema, ["page", "size"]);
@@ -62,24 +71,6 @@ async function getlistData() {
   const resp = await reqGetUserList(listFilterSchema);
   listData.value = resp.data!.records!;
   total.value = resp.data?.page_info.total_count || 0;
-
-  // userList.value = [
-  //   {
-  //     id: 1,
-  //     username: "phoenix",
-  //     nickname: "phoenix",
-  //     phone: "18059247212",
-  //     role: {
-  //       id: 1,
-  //       label: "超级管理员",
-  //       created_at: "2025-03-13 00:00:00",
-  //       updated_at: "2025-03-13 00:00:00",
-  //     },
-  //     is_super_admin: true,
-  //     created_at: "2025-03-13 00:00:00",
-  //     updated_at: "2025-03-13 00:00:00",
-  //   },
-  // ];
 }
 
 // deletee
@@ -275,6 +266,12 @@ const updateConfirmBtnHandler = async () => {
 };
 </script>
 
+<script lang="ts">
+export default {
+  name: "UserPage",
+};
+</script>
+
 <template>
   <!-- 过滤项 -->
   <el-card class="filter-card">
@@ -294,7 +291,10 @@ const updateConfirmBtnHandler = async () => {
             v-model="listFilterSchema.phone"
           ></el-input>
         </el-form-item>
-        <el-form-item :label="$t('main.role.role')">
+        <el-form-item
+          :label="$t('main.role.role')"
+          v-if="props.specify_role_id <= 0"
+        >
           <el-select
             v-model="listFilterSchema.role_id"
             filterable
