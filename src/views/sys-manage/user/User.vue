@@ -364,7 +364,7 @@ const updateConfirmBtnHandler = async () => {
         align="center"
         prop="created_at"
       ></el-table-column>
-      <el-table-column :label="$t('main.actions')" align="center" fixed="right">
+      <el-table-column align="left" fixed="right">
         <!-- eslint-disable-next-line vue/valid-attribute-name -->
         <template #="{ row }">
           <el-button
@@ -381,7 +381,12 @@ const updateConfirmBtnHandler = async () => {
             @confirm="deleteBtnHandler(row.id)"
           >
             <template #reference>
-              <el-button type="danger" zise="small" icon="Delete"></el-button>
+              <el-button
+                type="danger"
+                zise="small"
+                icon="Delete"
+                circle
+              ></el-button>
             </template>
           </el-popconfirm>
         </template>

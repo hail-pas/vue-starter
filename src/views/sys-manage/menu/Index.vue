@@ -11,7 +11,6 @@ import type {
   SystemResourceList,
   SystemResourceUpdateSchema,
 } from "@/api/sys-resource/types";
-import { setAllPropertiesToUndefined } from "@/common/utils";
 import { ElMessage, type FormInstance, type FormRules } from "element-plus";
 import { nextTick, onMounted, reactive, ref, type Ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -34,11 +33,10 @@ const systemResourceTypeList = [
   },
 ];
 
-const total = ref(0);
 const listData: Ref<SystemResourceList[], SystemResourceList[]> = ref([]);
 const listFilterSchema = reactive<SystemResourceFilterSchema>({
   page: 1,
-  size: 10,
+  size: 200,
 });
 
 const getlistData = async () => {
@@ -47,7 +45,7 @@ const getlistData = async () => {
   listData.value = [
     {
       id: 1,
-      code: "index",
+      code: "Index",
       label: "首页",
       route_path: "/index",
       icon_path: "HomeFilled",
@@ -61,7 +59,7 @@ const getlistData = async () => {
     },
     {
       id: 2,
-      code: "systemManage",
+      code: "SystemManage",
       label: "系统管理",
       route_path: "/sys-manage",
       icon_path: "Tools",
@@ -153,10 +151,6 @@ const getlistData = async () => {
 onMounted(async () => {
   await getlistData();
 });
-
-const resetBtnHandler = () => {
-  setAllPropertiesToUndefined(listFilterSchema, ["page", "size"]);
-};
 
 // Create
 const createDialogVisible = ref(false);
@@ -357,87 +351,50 @@ const deleteBtnHandler = async (id: number) => {
 
 <template>
   <!-- <RouterView></RouterView> -->
-  <el-card class="filter-card">
-    <el-form :model="listFilterSchema" :inline="true">
-      <div>
-        <el-form-item :label="$t('main.type')">
-          <el-select
-            v-model="listFilterSchema.type"
-            filterable
-            clearable
-            remote-show-suffix
-            :placeholder="$t('main.selectTipPrefix') + $t('main.type')"
-          >
-            <el-option
-              v-for="item in systemResourceTypeList"
-              :key="item.id"
-              :label="item.label"
-              :value="item.id"
-            />
-          </el-select>
-        </el-form-item>
-      </div>
-      <div>
-        <el-form-item>
-          <el-button
-            type="primary"
-            zise="default"
-            circle
-            icon="Search"
-            @click="getlistData"
-          ></el-button>
-          <el-button type="primary" zise="default" @click="resetBtnHandler">{{
-            $t("functionBtn.reset")
-          }}</el-button>
-        </el-form-item>
-      </div>
-    </el-form>
-  </el-card>
-
   <!-- 内容展示区 -->
   <el-card class="content-card">
-    <el-button type="primary" zise="default" @click="createBtnHandler">{{
-      $t("functionBtn.add")
-    }}</el-button>
     <el-table :data="listData" row-key="id">
       <!-- <el-table-column type="selection" align="center"></el-table-column> -->
       <el-table-column type="index" align="center"></el-table-column>
-      <el-table-column prop="date" label="Date" sortable />
-      <el-table-column prop="name" label="Name" sortable />
-      <el-table-column :label="$t('main.actions')" align="center">
+      <el-table-column prop="label" :label="$t('main.label')" />
+      <el-table-column prop="code" :label="$t('main.code')" />
+      <el-table-column prop="type" :label="$t('main.type')" />
+      <el-table-column align="left">
         <!-- eslint-disable-next-line vue/valid-attribute-name -->
         <template #="{ row }">
           <el-button
+            type="primary"
+            size="small"
+            icon="Plus"
+            circle
+            @click="createBtnHandler"
+          ></el-button>
+          <el-button
             type="warning"
-            zise="small"
+            size="small"
             icon="Edit"
             circle
             @click="editBtnHandler(row)"
           ></el-button>
           <el-popconfirm
+            v-if="row.children && row.children.length <= 0"
             title="确认删除"
             icon="Delete"
             :disabled="deleteBtnDisabled"
             @confirm="deleteBtnHandler(row.id)"
           >
             <template #reference>
-              <el-button type="danger" zise="small" icon="Delete"></el-button>
+              <el-button
+                type="danger"
+                size="small"
+                icon="Delete"
+                circle
+              ></el-button>
             </template>
           </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination
-      v-model:current-page="listFilterSchema.page"
-      v-model:page-size="listFilterSchema.size"
-      :page-sizes="[1, 2, 3, 4, 10]"
-      size="small"
-      :disabled="false"
-      :background="true"
-      layout="prev, pager, next, jumper, ->, sizes, total"
-      :total="total"
-      @change="getlistData"
-    />
   </el-card>
 
   <!-- create dialog -->
@@ -479,7 +436,7 @@ const deleteBtnHandler = async (id: number) => {
         >
         </el-input>
       </el-form-item>
-      <el-form-item :label="$t('main.label')" prop="order">
+      <el-form-item :label="$t('main.ascSortOrder')" prop="order">
         <el-input-number v-model="createFormData.order" :min="1" />
       </el-form-item>
       <el-form-item
@@ -533,7 +490,7 @@ const deleteBtnHandler = async (id: number) => {
         >
         </el-input>
       </el-form-item>
-      <el-form-item :label="$t('main.label')" prop="order">
+      <el-form-item :label="$t('main.ascSortOrder')" prop="order">
         <el-input-number v-model="updateFormData.order" :min="1" />
       </el-form-item>
     </el-form>
