@@ -205,8 +205,6 @@ const createConfirmBtnHandler = async () => {
     return;
   }
 
-  console.log(checkedSysResources);
-
   createFormData.system_resources = checkedSysResources as number[];
 
   try {

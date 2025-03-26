@@ -61,7 +61,6 @@ function validateCodeInput(
   callback: (error?: string | Error) => void,
 ) {
   if (value.trim().length > 8 || value.trim().length < 2) {
-    console.log("trigger...");
 
     callback(new Error("请正确输入code"));
   } else {
@@ -99,7 +98,6 @@ const reqAddEditBrand = async () => {
     return;
   }
 
-  console.log("added/edited");
   ElMessage({
     type: "success",
     message: "操作成功",
