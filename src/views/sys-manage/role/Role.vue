@@ -205,6 +205,8 @@ const createConfirmBtnHandler = async () => {
     return;
   }
 
+  // 处理 pop confirm
+
   createFormData.system_resources = checkedSysResources as number[];
 
   try {
@@ -347,7 +349,7 @@ const updateConfirmBtnHandler = async () => {
             @click="handleDetailClick(row)"
           ></el-button>
           <el-popconfirm
-            title="确认删除"
+            :title="$t('main.confirmDelete')"
             icon="Delete"
             :disabled="deleteBtnDisabled"
             @confirm="deleteBtnHandler(row.id)"
@@ -426,7 +428,7 @@ const updateConfirmBtnHandler = async () => {
               >{{ $t("functionBtn.confirm") }}</el-button
             >
             <el-popconfirm
-              title="确认删除"
+              :title="$t('main.confirmDelete')"
               icon="Delete"
               :disabled="deleteBtnDisabled"
               @confirm="deleteBtnHandler(roleDetail!.id)"

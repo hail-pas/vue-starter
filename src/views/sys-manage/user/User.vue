@@ -375,7 +375,7 @@ export default {
             @click="editBtnHandler(row)"
           ></el-button>
           <el-popconfirm
-            title="确认删除"
+            :title="$t('main.confirmDelete')"
             icon="Delete"
             :disabled="deleteBtnDisabled"
             @confirm="deleteBtnHandler(row.id)"

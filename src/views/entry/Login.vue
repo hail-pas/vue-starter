@@ -156,87 +156,85 @@ function goForgetPassword() {
 
 <template>
   <div class="login_container">
-    <el-config-provider :locale="langStore.getEleLocale().value">
-      <el-row>
-        <el-col :span="10" :lg="8" :md="7" :sm="6" :xs="3"></el-col>
-        <el-col :span="4" :lg="8" :md="10" :sm="12" :xs="18">
-          <el-form
-            ref="ruleFormRef"
-            class="login_form"
-            :rules="formRules"
-            :model="loginData"
-            :scroll-to-error="true"
-            :show-message="true"
-          >
-            <h1>{{ $t("login.title") }}</h1>
-            <h2>{{ $t("login.subtitle") }}</h2>
-            <!-- 用户名 -->
-            <el-form-item prop="username">
-              <el-input
-                v-model="loginData.username"
-                clearable
-                autocomplete="on"
-                autofocus
-                maxlength="16"
-                minlength="4"
-                :placeholder="$t('login.usernamePlaceholder')"
-                @input="validateForm(ruleFormRef)"
-              >
-                <template #prefix>
-                  <el-icon color="black" size="1.6em">
-                    <User />
-                  </el-icon>
-                </template>
-              </el-input>
-            </el-form-item>
-            <!-- 密码 -->
-            <el-form-item prop="password">
-              <!-- <label for="password" :prefix-icon="Lock">{{ $t('login.password') }}</label> -->
-              <el-input
-                v-model="loginData.password"
-                show-password
-                maxlength="20"
-                minlength="8"
-                clearable
-                :placeholder="$t('login.passwordPlaceholder')"
-                @input="validateForm(ruleFormRef)"
-              >
-                <template #prefix>
-                  <el-icon color="black" size="1.6em">
-                    <Lock />
-                  </el-icon>
-                </template>
-              </el-input>
-            </el-form-item>
-            <!-- 登录按钮 -->
-            <el-form-item>
-              <el-button
-                class="login_btn"
-                type="primary"
-                :loading="loading"
-                :disabled="loginBtnDisabled"
-                @click="submitForm(ruleFormRef)"
-                >{{ $t("login.login") }}</el-button
-              >
-            </el-form-item>
-            <!-- 记住密码 -->
-            <div class="login_footer">
-              <SvgIcon
-                name="language"
-                class="language_icon"
-                :color="languageIconColor"
-                @click="langStore.toggleLanguage"
-                @mouseover="languageIconColor = 'blue'"
-                @mouseout="languageIconColor = 'black'"
-              />
-              <span class="forget_pwd_span" @click="goForgetPassword">{{
-                $t("login.forgotPassword")
-              }}</span>
-            </div>
-          </el-form>
-        </el-col>
-      </el-row>
-    </el-config-provider>
+    <el-row>
+      <el-col :span="10" :lg="8" :md="7" :sm="6" :xs="3"></el-col>
+      <el-col :span="4" :lg="8" :md="10" :sm="12" :xs="18">
+        <el-form
+          ref="ruleFormRef"
+          class="login_form"
+          :rules="formRules"
+          :model="loginData"
+          :scroll-to-error="true"
+          :show-message="true"
+        >
+          <h1>{{ $t("login.title") }}</h1>
+          <h2>{{ $t("login.subtitle") }}</h2>
+          <!-- 用户名 -->
+          <el-form-item prop="username">
+            <el-input
+              v-model="loginData.username"
+              clearable
+              autocomplete="on"
+              autofocus
+              maxlength="16"
+              minlength="4"
+              :placeholder="$t('login.usernamePlaceholder')"
+              @input="validateForm(ruleFormRef)"
+            >
+              <template #prefix>
+                <el-icon color="black" size="1.6em">
+                  <User />
+                </el-icon>
+              </template>
+            </el-input>
+          </el-form-item>
+          <!-- 密码 -->
+          <el-form-item prop="password">
+            <!-- <label for="password" :prefix-icon="Lock">{{ $t('login.password') }}</label> -->
+            <el-input
+              v-model="loginData.password"
+              show-password
+              maxlength="20"
+              minlength="8"
+              clearable
+              :placeholder="$t('login.passwordPlaceholder')"
+              @input="validateForm(ruleFormRef)"
+            >
+              <template #prefix>
+                <el-icon color="black" size="1.6em">
+                  <Lock />
+                </el-icon>
+              </template>
+            </el-input>
+          </el-form-item>
+          <!-- 登录按钮 -->
+          <el-form-item>
+            <el-button
+              class="login_btn"
+              type="primary"
+              :loading="loading"
+              :disabled="loginBtnDisabled"
+              @click="submitForm(ruleFormRef)"
+              >{{ $t("login.login") }}</el-button
+            >
+          </el-form-item>
+          <!-- 记住密码 -->
+          <div class="login_footer">
+            <SvgIcon
+              name="language"
+              class="language_icon"
+              :color="languageIconColor"
+              @click="langStore.toggleLanguage"
+              @mouseover="languageIconColor = 'blue'"
+              @mouseout="languageIconColor = 'black'"
+            />
+            <span class="forget_pwd_span" @click="goForgetPassword">{{
+              $t("login.forgotPassword")
+            }}</span>
+          </div>
+        </el-form>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
