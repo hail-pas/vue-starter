@@ -45,8 +45,6 @@ export default {
     SystemManageUser: "用户管理",
     SystemManageRole: "角色管理",
     SystemManageMenu: "菜单管理",
-    SystemManageMenuC1: "菜单管理C1",
-    SystemManageMenuC2: "菜单管理C2",
   },
   functionBtn: {
     add: "添加",

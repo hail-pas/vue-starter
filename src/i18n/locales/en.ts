@@ -45,8 +45,6 @@ export default {
     SystemManageUser: "UserManage",
     SystemManageRole: "RoleManage",
     SystemManageMenu: "MenuManage",
-    SystemManageMenuC1: "MenuManageC1",
-    SystemManageMenuC2: "MenuManageC2",
   },
   functionBtn: {
     add: "Add New",
