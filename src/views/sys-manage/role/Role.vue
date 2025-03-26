@@ -18,12 +18,15 @@ import { setAllPropertiesToUndefined } from "@/common/utils";
 import {
   ElMessage,
   type FormInstance,
+  type TreeInstance,
   type FormRules,
   type TabsPaneContext,
 } from "element-plus";
-import { nextTick, onMounted, reactive, ref, type Ref } from "vue";
+import { computed, nextTick, onMounted, reactive, ref, type Ref } from "vue";
 import UserPage from "@/views/sys-manage/user/User.vue";
 import { useI18n } from "vue-i18n";
+import type { SystemResourceList } from "@/api/sys-resource/types";
+import { getAllysResoourceFieldValues } from "@/stores/user/utils";
 
 const { t: $t } = useI18n();
 // read
@@ -69,13 +72,25 @@ const handleDetailClick = async (item: RoleList) => {
   selected_fole_id.value = item.id;
   if (deatailTabActiveName.value == "detail") {
     await getRoleDetail();
+  } else {
+    updateFormRef.value?.clearValidate();
   }
   detailDrawerVisibale.value = true;
 };
 
 const deatailTabActiveName = ref("detail");
 let roleDetail: Ref<RoleDetail | null, RoleDetail | null> = ref(null);
+const allSystemResources: Ref<SystemResourceList[], SystemResourceList[]> = ref(
+  [],
+);
+
+const getAllSysResources = async () => {
+  const resp = await reqGetSystemResourceList();
+  allSystemResources.value = resp.data || [];
+};
+
 const getRoleDetail = async () => {
+  await getAllSysResources();
   // const resp = await reqGetRoleDetail(selected_fole_id.value)
   // roleDetail.value = resp.data;
   roleDetail.value = {
@@ -85,12 +100,18 @@ const getRoleDetail = async () => {
     updated_at: "",
     system_resources: [1, 2, 3, 4],
   };
+  updateFormData = reactive<RoleUpdateSchema>({
+    id: roleDetail.value.id,
+    label: roleDetail.value.label,
+    system_resources: roleDetail.value.system_resources,
+  });
+  updateDialogVisible.value = true;
+  updateFormRef.value?.clearValidate();
 };
 
-const detailEditBtnHandler = () => {
-  detailDrawerVisibale.value = false;
-  editBtnHandler(roleDetail.value!);
-};
+const expandedSysResourceIds = computed(() => {
+  return getAllysResoourceFieldValues<number>(allSystemResources.value, "id");
+});
 
 const handleDetailTabClick = async (tab: TabsPaneContext) => {
   if (tab.paneName!.toString() == "detail") {
@@ -133,6 +154,7 @@ const createFormData = reactive<RoleCreateSchema>({
   system_resources: [],
 });
 const createFormRef = ref<FormInstance>();
+const createTreeRef = ref<TreeInstance>();
 
 const createRules = reactive<FormRules<RoleCreateSchema>>({
   label: [
@@ -148,22 +170,17 @@ const createRules = reactive<FormRules<RoleCreateSchema>>({
       trigger: "change",
     },
   ],
-  // system_resources: [
-  //   {
-  //     required: true,
-  //     message: () => $t("main.inputTipPrefix") + $t("main.user.nickname"),
-  //     trigger: "change",
-  //   },
-  //   {
-  //     min: 4,
-  //     max: 20,
-  //     message: () => $t("main.user.nicknameLengthValidation"),
-  //     trigger: "change",
-  //   },
-  // ],
+  system_resources: [
+    {
+      required: true,
+      message: () => $t("main.selectTipPrefix") + $t("main.syusResource.menu"),
+      trigger: "change",
+    },
+  ],
 });
 
-const createBtnHandler = () => {
+const createBtnHandler = async () => {
+  await getAllSysResources();
   createDialogVisible.value = true;
   createFormRef.value?.resetFields();
   nextTick(() => {
@@ -177,6 +194,20 @@ const createConfirmBtnHandler = async () => {
   } catch {
     return;
   }
+
+  const checkedSysResources = createTreeRef.value!.getCheckedKeys();
+
+  if (checkedSysResources.length <= 0) {
+    ElMessage({
+      type: "error",
+      message: $t("main.selectTipPrefix") + $t("main.sysResource.menu"),
+    });
+    return;
+  }
+
+  console.log(checkedSysResources);
+
+  createFormData.system_resources = checkedSysResources as number[];
 
   try {
     await reqCreateRole(createFormData);
@@ -194,9 +225,6 @@ const createConfirmBtnHandler = async () => {
 
 // update
 const updateDialogVisible = ref(false);
-const updateDialogTitle = ref(
-  $t("functionBtn.edit") + " " + $t("main.user.user"),
-);
 let updateFormData: RoleUpdateSchema;
 const updateFormRef = ref<FormInstance>();
 
@@ -214,22 +242,16 @@ const updateRules = reactive<FormRules<RoleUpdateSchema>>({
       trigger: "change",
     },
   ],
+  system_resources: [
+    {
+      required: true,
+      message: () => $t("main.selectTipPrefix") + $t("main.sysResource.menu"),
+      trigger: "change",
+    },
+  ],
 });
 
-async function editBtnHandler(item: RoleList | RoleDetail) {
-  const sysresourceResp = await reqGetSystemResourceList({
-    role_id: item.id,
-    page: 1,
-    size: 200,
-  });
-  updateFormData = reactive<RoleUpdateSchema>({
-    id: item.id,
-    label: item.label,
-    system_resources: (sysresourceResp.data?.records || []).map((sr) => sr.id),
-  });
-  updateDialogVisible.value = true;
-  updateFormRef.value?.clearValidate();
-}
+const editTreeRef = ref<TreeInstance>();
 
 const updateConfirmBtnHandler = async () => {
   try {
@@ -237,6 +259,18 @@ const updateConfirmBtnHandler = async () => {
   } catch {
     return;
   }
+
+  const checkedSysResources = editTreeRef.value!.getCheckedKeys();
+
+  if (checkedSysResources.length <= 0) {
+    ElMessage({
+      type: "error",
+      message: $t("main.selectTipPrefix") + $t("main.sysResource.menu"),
+    });
+    return;
+  }
+
+  updateFormData.system_resources = checkedSysResources as number[];
 
   try {
     await reqUpdateRole(updateFormData);
@@ -314,13 +348,6 @@ const updateConfirmBtnHandler = async () => {
             circle
             @click="handleDetailClick(row)"
           ></el-button>
-          <el-button
-            type="warning"
-            zise="small"
-            icon="Edit"
-            circle
-            @click="editBtnHandler(row)"
-          ></el-button>
           <el-popconfirm
             title="确认删除"
             icon="Delete"
@@ -358,24 +385,48 @@ const updateConfirmBtnHandler = async () => {
       <el-tab-pane :label="$t('main.detail')" name="detail">
         <template v-if="roleDetail == null"> Loading </template>
         <template v-else>
-          <el-descriptions title="">
-            <el-descriptions-item :label="$t('main.label') + ':'">{{
-              roleDetail!.label
-            }}</el-descriptions-item>
-            <el-descriptions-item :label="$t('main.createdAt') + ':'">{{
-              roleDetail!.created_at
-            }}</el-descriptions-item>
-          </el-descriptions>
+          <el-form
+            :model="updateFormData"
+            label-position="right"
+            ref="updateFormRef"
+            :rules="updateRules"
+            label-width="auto"
+            status-icon
+          >
+            <el-form-item :label="$t('main.label')" prop="label">
+              <el-input
+                v-model="updateFormData.label"
+                :placeholder="$t('main.inputTipPrefix') + $t('main.label')"
+              >
+              </el-input>
+            </el-form-item>
+            <el-form-item :label="$t('main.createdAt')">
+              <el-input disabled :value="roleDetail.created_at"> </el-input>
+            </el-form-item>
+            <el-form-item
+              :label="$t('main.sysResource.menu')"
+              rop="system_resources"
+            >
+              <el-tree
+                ref="editTreeRef"
+                :data="allSystemResources"
+                show-checkbox
+                check-strictly
+                node-key="id"
+                :default-expanded-keys="expandedSysResourceIds"
+                :default-checked-keys="roleDetail.system_resources"
+              />
+            </el-form-item>
+          </el-form>
 
           <!-- button -->
           <div class="detail-btn-container">
             <el-button
-              type="warning"
+              type="success"
               zise="small"
-              icon="Edit"
-              circle
-              @click="detailEditBtnHandler"
-            ></el-button>
+              @click="updateConfirmBtnHandler"
+              >{{ $t("functionBtn.confirm") }}</el-button
+            >
             <el-popconfirm
               title="确认删除"
               icon="Delete"
@@ -423,6 +474,15 @@ const updateConfirmBtnHandler = async () => {
           :placeholder="$t('main.inputTipPrefix') + $t('main.label')"
         />
       </el-form-item>
+      <el-form-item :label="$t('main.sysResource.menu')" rop="system_resources">
+        <el-tree
+          ref="createTreeRef"
+          :data="allSystemResources"
+          show-checkbox
+          node-key="id"
+          :default-expanded-keys="expandedSysResourceIds"
+        />
+      </el-form-item>
     </el-form>
     <template #footer>
       <div class="dialog-footer">
@@ -430,36 +490,6 @@ const updateConfirmBtnHandler = async () => {
           $t("functionBtn.cancel")
         }}</el-button>
         <el-button type="primary" @click="createConfirmBtnHandler">
-          {{ $t("functionBtn.confirm") }}
-        </el-button>
-      </div>
-    </template>
-  </el-dialog>
-
-  <!-- update dialog -->
-  <el-dialog v-model="updateDialogVisible" :title="updateDialogTitle">
-    <el-form
-      :model="updateFormData"
-      label-position="right"
-      ref="updateFormRef"
-      :rules="updateRules"
-      label-width="auto"
-      status-icon
-    >
-      <el-form-item :label="$t('main.label')" prop="label">
-        <el-input
-          v-model="updateFormData.label"
-          :placeholder="$t('main.inputTipPrefix') + $t('main.label')"
-        >
-        </el-input>
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <div class="dialog-footer">
-        <el-button @click="updateDialogVisible = false">{{
-          $t("functionBtn.cancel")
-        }}</el-button>
-        <el-button type="primary" @click="updateConfirmBtnHandler">
           {{ $t("functionBtn.confirm") }}
         </el-button>
       </div>

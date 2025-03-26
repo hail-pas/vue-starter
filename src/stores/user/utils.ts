@@ -23,3 +23,18 @@ export async function getOrUpdateSystemResources(
   });
   return systemResources;
 }
+
+export function getAllysResoourceFieldValues<T>(
+  sr: SystemResource[],
+  fieldName: keyof SystemResource,
+) {
+  const results: T[] = [];
+
+  sr.forEach((i) => {
+    results.push(i[fieldName] as T);
+    if (i.children.length > 0) {
+      results.push(...getAllysResoourceFieldValues<T>(i.children, fieldName));
+    }
+  });
+  return results;
+}

@@ -5,7 +5,7 @@ import type {
   SystemResourceUpdateSchema,
 } from "@/api/sys-resource/types";
 import { http } from "@/common/request";
-import { type PageResponse, type Response } from "@/api/types";
+import { type Response } from "@/api/types";
 
 enum APIV1 {
   SYSTEM_RESOURCE = "/v1/system-resource",
@@ -14,14 +14,14 @@ enum APIV1 {
 export const reqGetSystemResourceList = (
   params?: SystemResourceListFilterSchema,
 ) => {
-  return http.get<PageResponse<SystemResourceList>>(APIV1.SYSTEM_RESOURCE, {
+  return http.get<Response<SystemResourceList[]>>(APIV1.SYSTEM_RESOURCE, {
     withCredentials: true,
     params: params,
   });
 };
 
 export const reqDeleteSystemResource = (id: number) => {
-  return http.delete<PageResponse<null>>(APIV1.SYSTEM_RESOURCE, {
+  return http.delete<Response<null>>(APIV1.SYSTEM_RESOURCE, {
     withCredentials: true,
     params: {
       id: id,
