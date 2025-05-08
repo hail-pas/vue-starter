@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick } from "vue";
+import { computed, nextTick, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useLayoutSettingStore } from "@/stores/layout/main";
 import { LayoutSettingKeyEnum } from "@/stores/layout/type";
@@ -69,6 +69,26 @@ const username = computed(() => {
 //     default: "",
 //   },
 // });
+let darkMode = ref(useLayoutSetting.getLayoutSetting().darkMode);
+
+const darkModeChangeHanldler = () => {
+  const rootEle = document.documentElement;
+  if (darkMode.value) {
+    rootEle.className = "dark";
+  } else {
+    rootEle.className = "";
+  }
+  useLayoutSetting.toggleSetting(LayoutSettingKeyEnum.darkMode);
+};
+
+onMounted(() => {
+  const rootEle = document.documentElement;
+  if (useLayoutSetting.getLayoutSetting().darkMode) {
+    rootEle.className = "dark";
+  } else {
+    rootEle.className = "";
+  }
+});
 </script>
 
 <template>
@@ -96,13 +116,27 @@ const username = computed(() => {
     circle
     @click="fullScreen()"
   ></el-button>
-  <el-button
-    :title="$t('home.btn.settings')"
-    type="primary"
-    size="small"
-    icon="Setting"
-    circle
-  ></el-button>
+  <el-popover placement="bottom" width="20%">
+    <el-form>
+      <el-form-item :label="$t('home.settings.darkMode')"
+        ><el-switch
+          @change="darkModeChangeHanldler"
+          v-model="darkMode"
+          inline-prompt
+          active-icon="MoonNight"
+          inactive-icon="Sunny"
+      /></el-form-item>
+    </el-form>
+    <template #reference>
+      <el-button
+        :title="$t('home.btn.settings')"
+        type="primary"
+        size="small"
+        icon="Setting"
+        circle
+      ></el-button
+    ></template>
+  </el-popover>
   <img :src="avatarPath" v-if="avatarPath" />
   <div class="avartar" v-else>
     {{ (username ? username : DEFAULT_USERNAME).slice(0, 2).toUpperCase() }}
@@ -136,6 +170,7 @@ img {
   margin-left: 0.4rem;
   margin-right: 0.2rem;
 }
+
 .avartar {
   font-size: 0.8rem;
   background-color: rgba(79, 161, 206, 0.54);

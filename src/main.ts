@@ -3,6 +3,8 @@ import { createApp } from "vue";
 import ElementPlus from "element-plus";
 import zhCn from "element-plus/es/locale/lang/zh-cn";
 import "element-plus/dist/index.css";
+import "element-plus/theme-chalk/dark/css-vars.css";
+
 import "virtual:svg-icons-register";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import i18n from "@/i18n/main";

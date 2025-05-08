@@ -29,6 +29,9 @@ export default {
       fullScreenControl: "全屏控制",
       settings: "设置",
     },
+    settings: {
+      darkMode: "暗黑模式",
+    },
   },
   error: {
     serverError: "服务器错误",

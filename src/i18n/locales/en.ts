@@ -29,6 +29,9 @@ export default {
       fullScreenControl: "Full Screen Control",
       settings: "Settings",
     },
+    settings: {
+      darkMode: "Dark Mode",
+    },
   },
   error: {
     serverError: "Server error",

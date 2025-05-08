@@ -15,6 +15,7 @@ export const useLayoutSettingStore = defineStore(
       const ls: LayoutSetting = {
         menuExpanded: true,
         refreshTrigger: true,
+        darkMode: false,
       };
       if (localStorage.getItem(StoreKeyEnum.layoutSetting)) {
         try {
