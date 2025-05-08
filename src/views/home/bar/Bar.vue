@@ -31,7 +31,7 @@ defineProps({
   height: 100%;
   display: flex;
   justify-content: space-between;
-  box-shadow: 1px 1px 5px grey;
+  box-shadow: 0px 1px 5px black;
   // background-image: linear-gradient(
   //   to right,
   //   rgb(0, 21, 41),
