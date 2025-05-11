@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { SystemResource } from "@/api/auth/types";
+import { ResourceTypeEnum } from "@/api/sys-resource/types";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 const { t: $t } = useI18n();
@@ -25,9 +26,13 @@ export default {
 
 <template>
   <template v-for="resource in systemResources" :key="resource.id.toString()">
-    <template v-if="resource.enabled">
+    <template v-if="resource.enabled && resource.type == ResourceTypeEnum.menu">
       <el-menu-item
-        v-if="(resource.children || []).length == 0"
+        v-if="
+          (resource.children || []).filter(
+            (child) => child.type === ResourceTypeEnum.menu,
+          ).length === 0
+        "
         :index="resource.route_path"
         :id="resource.id"
         @click="routeMain(resource.route_path)"

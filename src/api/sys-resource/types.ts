@@ -5,6 +5,12 @@ export interface SystemResourceListFilterSchema {
   role_id?: number;
 }
 
+export enum ResourceTypeEnum {
+  api = "api",
+  menu = "menu",
+  button = "button",
+}
+
 export interface SystemResourceList {
   id: number;
   code: string;

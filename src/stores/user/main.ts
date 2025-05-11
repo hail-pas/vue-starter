@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { type AccountInfo, type SystemResource } from "@/api/auth/types";
 import { StoreKeyEnum } from "@/stores/enum";
+import { ResourceTypeEnum } from "@/api/sys-resource/types";
 
 export const useUserInfoStore = defineStore(StoreKeyEnum.userInfo, () => {
   let token: string | null = null;
@@ -60,7 +61,8 @@ export const useUserInfoStore = defineStore(StoreKeyEnum.userInfo, () => {
     if (!sr) {
       return;
     }
-    systemResourcesFlatMap.set(sr.route_path, sr);
+    // button 和 api 不配置 route_path
+    systemResourcesFlatMap.set(sr.route_path || sr.code, sr);
     for (const subSr of sr.children || []) {
       _setSystemResourcesFlatMap(subSr);
     }
@@ -93,6 +95,20 @@ export const useUserInfoStore = defineStore(StoreKeyEnum.userInfo, () => {
     systemResourcesFlatMap.clear();
   }
 
+  function hasBtn(btnName: string) {
+    if (!btnName) {
+      return false;
+    }
+    console.log(systemResourcesFlatMap);
+
+    const btnResource = systemResourcesFlatMap.get(btnName);
+    if (!btnResource) {
+      return false;
+    }
+
+    return btnResource.enabled && btnResource.type == ResourceTypeEnum.button;
+  }
+
   return {
     setToken,
     getToken,
@@ -101,6 +117,7 @@ export const useUserInfoStore = defineStore(StoreKeyEnum.userInfo, () => {
     setSystemResources,
     getSystemResources,
     getSystemResourcesByRoutePath,
+    hasBtn,
     clean,
   };
 });

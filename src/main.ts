@@ -18,6 +18,7 @@ import { storeInstance } from "@/stores/main";
 import router from "@/router/main";
 
 import App from "./App.vue";
+import { registerDirectives } from "@/directives/main";
 
 const app = createApp(App);
 
@@ -26,6 +27,9 @@ app.use(storeInstance);
 
 // i18n
 app.use(i18n);
+
+// directives
+registerDirectives(app);
 
 // element-plus
 app.use(ElementPlus, {

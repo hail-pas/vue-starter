@@ -5,11 +5,13 @@ import {
   reqDeleteSystemResource,
   reqUpdateSystemResource,
 } from "@/api/sys-resource/main";
-import type {
-  SystemResourceCreateSchema,
-  SystemResourceList,
-  SystemResourceUpdateSchema,
+import {
+  ResourceTypeEnum,
+  type SystemResourceCreateSchema,
+  type SystemResourceList,
+  type SystemResourceUpdateSchema,
 } from "@/api/sys-resource/types";
+import { BtnCodeEnum } from "@/router/enum";
 import { ElMessage, type FormInstance, type FormRules } from "element-plus";
 import { nextTick, onMounted, reactive, ref, type Ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -19,15 +21,15 @@ const { t: $t } = useI18n();
 // read
 const systemResourceTypeList = [
   {
-    id: "menu",
+    id: ResourceTypeEnum.menu,
     label: $t("main.sysResource.menu"),
   },
   {
-    id: "button",
+    id: ResourceTypeEnum.button,
     label: $t("main.sysResource.button"),
   },
   {
-    id: "api",
+    id: ResourceTypeEnum.api,
     label: $t("main.sysResource.api"),
   },
 ];
@@ -331,6 +333,7 @@ const deleteBtnHandler = async (id: number) => {
       type="primary"
       zise="default"
       @click="createBtnHandler(undefined)"
+      v-cshow="{ value: BtnCodeEnum.SystemManageMenuAdd }"
       >{{ $t("functionBtn.add") }}</el-button
     >
     <el-table :data="listData" row-key="id">
@@ -343,7 +346,7 @@ const deleteBtnHandler = async (id: number) => {
         <!-- eslint-disable-next-line vue/valid-attribute-name -->
         <template #="{ row }">
           <el-button
-            v-if="row.type == 'menu'"
+            v-if="row.type == ResourceTypeEnum.menu"
             type="primary"
             size="small"
             icon="Plus"

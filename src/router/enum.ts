@@ -49,6 +49,10 @@ export enum MainContentRoutePath {
   SystemManageMenu = "/sys-manage/menu",
 }
 
+export enum BtnCodeEnum {
+  SystemManageMenuAdd = "SystemManageMenuAdd",
+}
+
 const mainContentRoutePathValues: string[] =
   Object.values(MainContentRoutePath);
 
